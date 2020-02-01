@@ -1,3 +1,77 @@
 <resources>
     <string name="app_name">KeepInFit</string>
+    <string name="title_activity_menu">MenuActivity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_slideshow">Slideshow</string>
+    <string name="menu_tools">Tools</string>
+    <string name="menu_share">Share</string>
+    <string name="menu_send">Send</string>
+
+    <string name="menu_profile">Профиль</string>
+
+    <string name="profile_gender">Пол</string>
+    <string name="profile_age">Возраст</string>
+    <string name="profile_height">Рост</string>
+    <string name="profile_weight">Вес</string>
+    <string name="profile_goal">Цель</string>
+    <string name="profile_activity">Активность</string>
+    <string name="profile_done_button">Готово</string>
+
+    <string-array name="genders">
+        <item>Мужской</item>
+        <item>Женский</item>
+    </string-array>
+
+    <string-array name="ages">
+        <item>20</item>
+        <item>40</item>
+        <item>60</item>
+    </string-array>
+
+    <string-array name="heightList">
+        <item>180</item>
+        <item>190</item>
+        <item>200</item>
+    </string-array>
+
+    <string-array name="weightList">
+        <item>70</item>
+        <item>80</item>
+        <item>90</item>
+    </string-array>
+
+    <string-array name="activityLevels">
+        <item>Минимальный уровень</item>
+        <item>Низкий уровень</item>
+        <item>Средний уровень</item>
+        <item>Высокий уровень</item>
+        <item>Очень высокий</item>
+    </string-array>
+
+    <string-array name="goals">
+        <item>Набрать вес</item>
+        <item>Похудеть</item>
+        <item>Не изменять вес</item>
+    </string-array>
+
+    <string name="daily_stats">Статистика за день</string>
+    <string name="proteins">Белки</string>
+    <string name="fats">Жиры</string>
+    <string name="carbohydrates">Углеводы</string>
+    <string name="kcals">Килокалории</string>
+
+    <string name="prot">Б</string>
+    <string name="fat">Ж</string>
+    <string name="carb">У</string>
+    <string name="kcal">Ккал</string>
+
+
 </resources>
