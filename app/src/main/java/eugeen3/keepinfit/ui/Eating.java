@@ -1,7 +1,9 @@
 package eugeen3.keepinfit.ui;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,19 +19,32 @@ import eugeen3.keepinfit.entities.FoodItem;
 
 public class Eating extends AppCompatActivity {
 
-    List<FoodItem> foodItems = new ArrayList<>();
-
+    protected List<FoodItem> foodItems = new ArrayList<>();
+    private FloatingActionButton addFoodItem;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.meal);
+        setTitle("textView");
         overridePendingTransition(0, 0);
 
+        addFoodItem = findViewById(R.id.btnAddFoodItem);
+
+        addFoodItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), SearchFoodItem.class);
+                startActivity(intent);
+                finish();
+            }
+        });
         setInitialData();
         RecyclerView recyclerView = findViewById(R.id.foodItemsList);
         MealAdapter adapter = new MealAdapter(this, foodItems);
         recyclerView.setAdapter(adapter);
     }
+
+
 
     @Override
     public void onBackPressed() {

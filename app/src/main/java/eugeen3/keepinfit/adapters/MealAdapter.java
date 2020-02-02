@@ -17,8 +17,8 @@ import static java.lang.String.valueOf;
 
 public class MealAdapter extends RecyclerView.Adapter<MealAdapter.ViewHolder> {
 
-    private LayoutInflater inflater;
-    private List<FoodItem> foodItems;
+    protected LayoutInflater inflater;
+    protected List<FoodItem> foodItems;
 
     public MealAdapter(Context context, List<FoodItem> foodItems) {
         this.foodItems = foodItems;

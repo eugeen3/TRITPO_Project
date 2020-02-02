@@ -73,5 +73,6 @@
     <string name="carb">У</string>
     <string name="kcal">Ккал</string>
 
+    <string name="btn_done">Готово</string>
 
 </resources>
