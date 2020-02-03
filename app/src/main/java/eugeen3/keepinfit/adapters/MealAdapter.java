@@ -17,7 +17,7 @@ import static java.lang.String.valueOf;
 
 public class MealAdapter extends RecyclerView.Adapter<MealAdapter.ViewHolder> {
 
-    protected LayoutInflater inflater;
+    private LayoutInflater inflater;
     protected List<FoodItem> foodItems;
 
     public MealAdapter(Context context, List<FoodItem> foodItems) {
@@ -26,7 +26,6 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.ViewHolder> {
     }
     @Override
     public MealAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
         View view = inflater.inflate(R.layout.food_items_list, parent, false);
         return new ViewHolder(view);
     }
@@ -35,7 +34,7 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.ViewHolder> {
     public void onBindViewHolder(MealAdapter.ViewHolder holder, int position) {
         FoodItem foodItem = foodItems.get(position);
         holder.nameView.setText(foodItem.getName());
-        holder.massView.setText(valueOf(foodItem.getMass()) + "гр.");
+        holder.massView.setText((foodItem.getMass()) + " гр.");
         holder.proteinsView.setText(valueOf(foodItem.getProteins()));
         holder.carbohydratesView.setText(valueOf(foodItem.getCarbohydrates()));
         holder.fatsView.setText(valueOf(foodItem.getFats()));

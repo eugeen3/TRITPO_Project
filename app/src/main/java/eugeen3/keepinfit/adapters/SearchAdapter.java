@@ -21,7 +21,7 @@ public class SearchAdapter extends MealAdapter {
     public void onBindViewHolder(MealAdapter.ViewHolder holder, int position) {
         FoodItem foodItem = foodItems.get(position);
         holder.nameView.setText(foodItem.getName());
-        holder.massView.setText("в 100 гр.");
+        holder.massView.setText("в 100 гр:");
         holder.proteinsView.setText(valueOf(foodItem.getProteins()));
         holder.carbohydratesView.setText(valueOf(foodItem.getCarbohydrates()));
         holder.fatsView.setText(valueOf(foodItem.getFats()));

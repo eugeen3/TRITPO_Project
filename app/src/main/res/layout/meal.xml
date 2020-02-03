@@ -23,8 +23,11 @@
         android:layout_marginRight="16dp"
         android:layout_marginBottom="16dp"
         android:clickable="true"
+        android:tint="#0F27E4"
+        app:backgroundTint="#FFA000"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@mipmap/ic_launcher_round" />
+        app:srcCompat="@drawable/ic_action_name"
+        android:focusable="true" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

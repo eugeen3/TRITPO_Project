@@ -2,13 +2,21 @@ package eugeen3.keepinfit.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import eugeen3.keepinfit.R;
 import eugeen3.keepinfit.adapters.SearchAdapter;
+import eugeen3.keepinfit.entities.FoodItem;
 
-public class SearchFoodItem extends Eating {
+public class SearchFoodItem extends AppCompatActivity {
+
+    private List<FoodItem> foodItems = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -17,10 +25,10 @@ public class SearchFoodItem extends Eating {
         setTitle("textView");
         overridePendingTransition(0, 0);
 
-        //setInitialData();
-        RecyclerView recyclerView2 = findViewById(R.id.foundedFoodItems);
+        setInitialData();
+        RecyclerView recyclerView = findViewById(R.id.foodItemsList);
         SearchAdapter adapter = new SearchAdapter(this, foodItems);
-        recyclerView2.setAdapter(adapter);
+        recyclerView.setAdapter(adapter);
     }
 
     @Override
@@ -30,13 +38,8 @@ public class SearchFoodItem extends Eating {
         finish();
     }
 
-    /*
-    private void setInitialData(){
-        foodItems.add(new FoodItem ("Банан", 200, 5.2f, 62.7f, 2, 278));
-        foodItems.add(new FoodItem ("Каша овсяная", 200, 10, 123, 14.88f, 600));
-        //foodItems.add(new FoodItem ("Galaxy S8", "Samsung", R.drawable.galaxys6));
-        //foodItems.add(new FoodItem ("LG G 5", "LG", R.drawable.nexus5x));
+    private void setInitialData() {
+        foodItems.add(new FoodItem("Банан", 200, 5.2f, 62.7f, 2, 278));
+        foodItems.add(new FoodItem("Каша овсяная", 200, 10, 123, 14.88f, 600));
     }
-
-     */
 }
