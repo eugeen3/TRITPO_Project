@@ -18,7 +18,7 @@ public class DBAdapter extends SQLiteOpenHelper {
     private static final int SCHEMA = 1;
     private static final String TABLE = "foodItems";
 
-    private static final String COLUMN_ID = "id";
+    private static final String COLUMN_ID = "_id";
     private static final String COLUMN_NAME = "name";
     private static final String COLUMN_PROTEINS = "proteins";
     private static final String COLUMN_CARBS = "carbs";
@@ -29,7 +29,7 @@ public class DBAdapter extends SQLiteOpenHelper {
     public DBAdapter(Context context) {
         super(context, DB_NAME, null, SCHEMA);
         this.myContext = context;
-        DB_PATH = context.getFilesDir().getPath() + DB_NAME;
+        DB_PATH = "/data/data/"+context.getPackageName()+"/databases/" + DB_NAME;
     }
 
     @Override

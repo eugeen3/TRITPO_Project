@@ -23,7 +23,6 @@
     <string name="profile_weight">Вес</string>
     <string name="profile_goal">Цель</string>
     <string name="profile_activity">Активность</string>
-    <string name="profile_done_button">Готово</string>
 
     <string-array name="genders">
         <item>Мужской</item>
@@ -72,7 +71,11 @@
     <string name="fat">Ж</string>
     <string name="carb">У</string>
     <string name="kcal">Ккал</string>
+    <string name="portion_weight">в 100 гр:</string>
+    <string name="hint_search_food">Введите назваение продукта</string>
 
     <string name="btn_done">Готово</string>
+    <string name="btn_cancel">Отмена</string>
+    <string name="btn_add">Добавить</string>
 
 </resources>

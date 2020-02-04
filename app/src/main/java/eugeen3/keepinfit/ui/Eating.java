@@ -29,7 +29,6 @@ public class Eating extends AppCompatActivity {
         overridePendingTransition(0, 0);
 
         addFoodItem = findViewById(R.id.btnAddFoodItem);
-
         addFoodItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
