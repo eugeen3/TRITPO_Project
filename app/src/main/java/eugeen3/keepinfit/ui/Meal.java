@@ -41,9 +41,10 @@ public class Meal extends AppCompatActivity {
         setInitialData();
         RecyclerView recyclerView = findViewById(R.id.foodItemsList);
         MealAdapter adapter = new MealAdapter(this, foodItems);
-        
         recyclerView.setAdapter(adapter);
     }
+
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

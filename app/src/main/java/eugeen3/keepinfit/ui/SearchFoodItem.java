@@ -8,16 +8,20 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.FilterQueryProvider;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import eugeen3.keepinfit.R;
 import eugeen3.keepinfit.adapters.DBAdapter;
 import eugeen3.keepinfit.entities.FoodItem;
+
+import static java.lang.String.valueOf;
 
 public class SearchFoodItem extends AppCompatActivity {
 
@@ -83,6 +87,21 @@ public class SearchFoodItem extends AppCompatActivity {
             });
 
             foodItemList.setAdapter(foodItemAdapter);
+            foodItemList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View arg1, int position, long arg3) {
+                    Cursor cursor = (Cursor) parent.getAdapter().getItem(position);
+                    String name = cursor.getString(1);
+                    float  prots = cursor.getFloat(2);
+                    float  carbs = cursor.getFloat(3);
+                    float  fats = cursor.getFloat(4);
+                    int  kcals = cursor.getInt(5);
+                    Intent intent = new Intent(getApplicationContext(), AddFoodItem.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    startActivityForResult(intent, 1);
+                    finish();
+                }
+            });
         }
         catch (SQLException ex){}
     }
@@ -111,13 +130,6 @@ public class SearchFoodItem extends AppCompatActivity {
         Intent intent = new Intent(this, Meal.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(intent);
-        finish();
-    }
-
-    public void addToMeal(View view) {
-        Intent intent = new Intent(this, AddFoodItem.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        startActivityForResult(intent, 1);
         finish();
     }
 
