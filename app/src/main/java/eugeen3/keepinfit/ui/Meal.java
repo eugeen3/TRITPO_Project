@@ -16,7 +16,7 @@ import eugeen3.keepinfit.R;
 import eugeen3.keepinfit.adapters.MealAdapter;
 import eugeen3.keepinfit.entities.FoodItem;
 
-public class Eating extends AppCompatActivity {
+public class Meal extends AppCompatActivity {
 
     private List<FoodItem> foodItems = new ArrayList<>();
     private FloatingActionButton addFoodItem;
@@ -33,20 +33,35 @@ public class Eating extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), SearchFoodItem.class);
-                startActivity(intent);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivityForResult(intent, 1);
                 finish();
             }
         });
         setInitialData();
         RecyclerView recyclerView = findViewById(R.id.foodItemsList);
         MealAdapter adapter = new MealAdapter(this, foodItems);
+        
         recyclerView.setAdapter(adapter);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (data == null) {return;}
+        String name = data.getStringExtra("foodName");
+        int mass = data.getIntExtra("foodMass", 100);
+        float prots = data.getFloatExtra("foodProts", 1.0f);
+        float fats = data.getFloatExtra("foodFats", 1.0f);
+        float carbs = data.getFloatExtra("foodCarbs", 1.0f);
+        int kcals = data.getIntExtra("foodKcals", 1);
+        FoodItem fItem = new FoodItem(name, mass, prots, carbs, fats, kcals);
+    }
 
     @Override
     public void onBackPressed() {
         Intent intent = new Intent(this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(intent);
         finish();
     }
@@ -57,7 +72,5 @@ public class Eating extends AppCompatActivity {
         foodItems.add(new FoodItem ("Каша овсяная", 200, 10, 123, 14.88f, 600));
         foodItems.add(new FoodItem ("Каша овсяная", 200, 10, 123, 14.88f, 600));
         foodItems.add(new FoodItem ("Каша овсяная", 200, 10, 123, 14.88f, 600));
-        //foodItems.add(new FoodItem ("Galaxy S8", "Samsung", R.drawable.galaxys6));
-        //foodItems.add(new FoodItem ("LG G 5", "LG", R.drawable.nexus5x));
     }
 }

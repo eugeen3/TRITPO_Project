@@ -14,13 +14,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import eugeen3.keepinfit.R;
 
-public class Profile extends AppCompatActivity implements TextWatcher{
-
-    /*
-    private TextInputEditText age;
-    private TextInputEditText height;
-    private TextInputEditText weight;
-     */
+public class Profile extends AppCompatActivity
+{
     private int ageInt;
     private int heightInt;
     private int weightInt;
@@ -52,22 +47,12 @@ public class Profile extends AppCompatActivity implements TextWatcher{
 
         sPref = getSharedPreferences(USERS_DATA, Context.MODE_PRIVATE);
         loadSettings();
-        //createTextListeners();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         saveSettings();
-    }
-
-    private void createTextListeners() {
-        /*
-        age.addTextChangedListener(this);
-        height.addTextChangedListener(this);
-        weight.addTextChangedListener(this);
-
-         */
     }
 
     private void initializeSpinners() {
@@ -201,41 +186,11 @@ public class Profile extends AppCompatActivity implements TextWatcher{
         return BMR;
     }
 
-
     @Override
-    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-    }
-
-    @Override
-    public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-    }
-
-    @Override
-    public void afterTextChanged(Editable s) {
-        /*
-        if (age.getText().toString() != null) {
-            int ageInt = Integer.parseInt(age.getText().toString());
-        }
-        if (height.getText().toString() != null) {
-            int heightInt = Integer.parseInt(height.getText().toString());
-        }
-        if (weight.getText().toString() != null) {
-            int weightInt = Integer.parseInt(weight.getText().toString());
-        }
-
-        if (ageInt < 10 || ageInt > 120) {
-            Toast.makeText(this, "Некорректный возраст", Toast.LENGTH_LONG).show();
-        }
-
-        if (heightInt < 140 || heightInt > 230) {
-            Toast.makeText(this, "Некорректный рост", Toast.LENGTH_LONG).show();
-        }
-
-        if (weightInt < 40 || weightInt > 300) {
-            Toast.makeText(this, "Некорректный вес", Toast.LENGTH_LONG).show();
-        }
-         */
+    public void onBackPressed() {
+        Intent intent = new Intent(getApplicationContext(), SearchFoodItem.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivity(intent);
+        finish();
     }
 }

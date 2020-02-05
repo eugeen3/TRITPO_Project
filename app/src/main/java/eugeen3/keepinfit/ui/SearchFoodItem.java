@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import eugeen3.keepinfit.R;
 import eugeen3.keepinfit.adapters.DBAdapter;
+import eugeen3.keepinfit.entities.FoodItem;
 
 public class SearchFoodItem extends AppCompatActivity {
 
@@ -31,6 +32,7 @@ public class SearchFoodItem extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search);
+        overridePendingTransition(0, 0);
         foodItemList = findViewById(R.id.foundedFoodItems);
         foodItemFilter = findViewById(R.id.searchFood);
 
@@ -91,20 +93,43 @@ public class SearchFoodItem extends AppCompatActivity {
         foodItemCursor.close();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (data == null) {return;}
+        String name = data.getStringExtra("foodName");
+        int mass = data.getIntExtra("foodMass", 100);
+        float prots = data.getFloatExtra("foodProts", 1.0f);
+        float fats = data.getFloatExtra("foodFats", 1.0f);
+        float carbs = data.getFloatExtra("foodCarbs", 1.0f);
+        int kcals = data.getIntExtra("foodKcals", 1);
+        FoodItem fItem = new FoodItem(name, mass, prots, carbs, fats, kcals);
+        foodItemAdapter.getCursor();
+    }
+
     public void cancelSearch(View view) {
-        Intent intent = new Intent(this, Eating.class);
+        Intent intent = new Intent(this, Meal.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(intent);
+        finish();
+    }
+
+    public void addToMeal(View view) {
+        Intent intent = new Intent(this, AddFoodItem.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivityForResult(intent, 1);
         finish();
     }
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(this, Eating.class);
+        Intent intent = new Intent(this, Meal.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(intent);
         finish();
     }
 
     public void addFoodItemToDB() {
-        
+
     }
 }
