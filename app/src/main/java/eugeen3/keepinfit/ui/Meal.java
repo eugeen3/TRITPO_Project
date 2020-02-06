@@ -43,8 +43,8 @@ public class Meal extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), SearchFoodItem.class);
                 //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                startActivity(intent);
-                finish();
+                startActivityForResult(intent, 1);
+                //finish();
             }
         });
         setInitialData();
@@ -53,7 +53,7 @@ public class Meal extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
     }
 
-/*
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -68,7 +68,7 @@ public class Meal extends AppCompatActivity {
         foodItems.add(fItem);
         adapter.notifyDataSetChanged();
     }
-*/
+
 
     @Override
     public void onBackPressed() {

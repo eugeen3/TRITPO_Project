@@ -30,7 +30,7 @@ public class AddFoodItem extends AppCompatActivity {
         setContentView(R.layout.add_food_item);
         setTitle("Добавить продукт");
         overridePendingTransition(0, 0);
-
+/*
         foodName = findViewById(R.id.addFoodName);
         foodProt = findViewById(R.id.addFoodProtValue);
         foodCarb = findViewById(R.id.addFoodCarbValue);
@@ -52,7 +52,7 @@ public class AddFoodItem extends AppCompatActivity {
             foodFat.setText(fats);
             foodKcal.setText(kcals);
         }
-
+*/
         initButtons();
         portionWeight = findViewById(R.id.portionWeight);
     }

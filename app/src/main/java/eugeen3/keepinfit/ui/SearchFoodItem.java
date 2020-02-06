@@ -7,38 +7,39 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FilterQueryProvider;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import eugeen3.keepinfit.R;
 import eugeen3.keepinfit.adapters.DBAdapter;
 import eugeen3.keepinfit.entities.FoodItem;
 
-import static java.lang.String.valueOf;
-
 public class SearchFoodItem extends AppCompatActivity {
 
-    DBAdapter sqlHelper;
-    SQLiteDatabase db;
-    Cursor foodItemCursor;
-    SimpleCursorAdapter foodItemAdapter;
-    ListView foodItemList;
-    EditText foodItemFilter;
+    private DBAdapter sqlHelper;
+    private SQLiteDatabase db;
+    private Cursor foodItemCursor;
+    private SimpleCursorAdapter foodItemAdapter;
+    private ListView foodItemList;
+    private EditText foodItemFilter;
 
-    String name;
-    int mass;
-    float prots;
-    float fats;
-    float carbs;
-    int kcals;
-    FoodItem fItem;
+    private String name;
+    private int mass;
+    private float prots;
+    private float fats;
+    private float carbs;
+    private int kcals;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,20 +105,13 @@ public class SearchFoodItem extends AppCompatActivity {
                     carbs = cursor.getFloat(3);
                     fats = cursor.getFloat(4);
                     kcals = cursor.getInt(5);
-                    Intent intent = new Intent(getApplicationContext(), AddFoodItem.class);
-                    intent.putExtra(Meal.KEY_NAME, name);
-                    intent.putExtra(Meal.KEY_PROTS, prots);
-                    intent.putExtra(Meal.KEY_CARBS, carbs);
-                    intent.putExtra(Meal.KEY_FATS, fats);
-                    intent.putExtra(Meal.KEY_KCALS, kcals);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                    startActivityForResult(intent, 1);
-                    finish();
+                    showInputDialog();
                 }
             });
         }
         catch (SQLException ex){}
     }
+
     @Override
     public void onDestroy(){
         super.onDestroy();
@@ -125,12 +119,7 @@ public class SearchFoodItem extends AppCompatActivity {
         foodItemCursor.close();
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (data == null) {return;}
-        mass = data.getIntExtra("mass", 0);
-        portionNV(mass);
+    private void finishActivity() {
         Intent intent = new Intent();
         intent.putExtra(Meal.KEY_NAME, name);
         intent.putExtra(Meal.KEY_MASS, mass);
@@ -138,10 +127,8 @@ public class SearchFoodItem extends AppCompatActivity {
         intent.putExtra(Meal.KEY_CARBS, carbs);
         intent.putExtra(Meal.KEY_FATS, fats);
         intent.putExtra(Meal.KEY_KCALS, kcals);
+        //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         setResult(RESULT_OK, intent);
-        //Toast.makeText(getApplicationContext(),
-        //        name + " " + prots + " " + carbs + " " + fats + " " + kcals,
-        //        Toast.LENGTH_LONG).show();
         finish();
     }
 
@@ -165,5 +152,41 @@ public class SearchFoodItem extends AppCompatActivity {
         carbs = FoodItem.portionNV(mass, carbs);
         fats = FoodItem.portionNV(mass, fats);
         kcals = FoodItem.portionNV(mass, kcals);
+    }
+
+    public void showInputDialog() {
+        final AlertDialog dialogBuilder = new AlertDialog.Builder(this).create();
+        LayoutInflater inflater = this.getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.dialog_food_mass, null);
+
+        final EditText massText =  dialogView.findViewById(R.id.edt_comment);
+        final Button input = dialogView.findViewById(R.id.btnInputMass);
+        Button cancel = dialogView.findViewById(R.id.btnCancelInput);
+        final TextView text = findViewById(R.id.inputDialogText);
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialogBuilder.cancel();
+            }
+        });
+        input.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mass = Integer.parseInt(massText.getText().toString());
+                if (mass <= 0) {
+                    Toast.makeText(getApplicationContext(),
+                            "Масса должна быть > 0", Toast.LENGTH_LONG).show();
+                }
+                else {
+                    portionNV(mass);
+                    finishActivity();
+                }
+                dialogBuilder.dismiss();
+            }
+        });
+
+        dialogBuilder.setView(dialogView);
+        dialogBuilder.show();
     }
 }

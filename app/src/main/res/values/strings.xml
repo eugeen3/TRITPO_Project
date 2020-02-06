@@ -72,8 +72,9 @@
     <string name="carb">У</string>
     <string name="kcal">Ккал</string>
     <string name="portion_weight">в 100 гр:</string>
-    <string name="grams">грамм</string>
-    <string name="hint_search_food">Введите назваение продукта</string>
+    <string name="hint_grams">грамм</string>
+    <string name="hint_search_food">Введите название продукта</string>
+    <string name="hint_input_mass">Введите массу продукта</string>
 
     <string name="btn_done">Готово</string>
     <string name="btn_cancel">Отмена</string>
