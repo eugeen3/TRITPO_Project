@@ -19,7 +19,16 @@ import eugeen3.keepinfit.entities.FoodItem;
 public class Meal extends AppCompatActivity {
 
     private List<FoodItem> foodItems = new ArrayList<>();
+    private MealAdapter adapter;
+    private RecyclerView recyclerView;
     private FloatingActionButton addFoodItem;
+
+    public static final String KEY_NAME = "name";
+    public static final String KEY_MASS = "mass";
+    public static final String KEY_PROTS = "prots";
+    public static final String KEY_CARBS = "carbs";
+    public static final String KEY_FATS = "fats";
+    public static final String KEY_KCALS = "kcals";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -33,36 +42,38 @@ public class Meal extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), SearchFoodItem.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                startActivityForResult(intent, 1);
+                //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
                 finish();
             }
         });
         setInitialData();
-        RecyclerView recyclerView = findViewById(R.id.foodItemsList);
-        MealAdapter adapter = new MealAdapter(this, foodItems);
+        recyclerView = findViewById(R.id.foodItemsList);
+        adapter = new MealAdapter(this, foodItems);
         recyclerView.setAdapter(adapter);
     }
 
-
-
+/*
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (data == null) {return;}
-        String name = data.getStringExtra("foodName");
-        int mass = data.getIntExtra("foodMass", 100);
-        float prots = data.getFloatExtra("foodProts", 1.0f);
-        float fats = data.getFloatExtra("foodFats", 1.0f);
-        float carbs = data.getFloatExtra("foodCarbs", 1.0f);
-        int kcals = data.getIntExtra("foodKcals", 1);
+        String name = data.getStringExtra(KEY_NAME);
+        int mass = data.getIntExtra(KEY_MASS, 100);
+        float prots = data.getFloatExtra(KEY_PROTS, 1.0f);
+        float fats = data.getFloatExtra(KEY_FATS, 1.0f);
+        float carbs = data.getFloatExtra(KEY_CARBS, 1.0f);
+        int kcals = data.getIntExtra(KEY_KCALS, 1);
         FoodItem fItem = new FoodItem(name, mass, prots, carbs, fats, kcals);
+        foodItems.add(fItem);
+        adapter.notifyDataSetChanged();
     }
+*/
 
     @Override
     public void onBackPressed() {
         Intent intent = new Intent(this, MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(intent);
         finish();
     }

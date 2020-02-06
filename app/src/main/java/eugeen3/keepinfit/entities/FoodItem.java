@@ -1,5 +1,7 @@
 package eugeen3.keepinfit.entities;
 
+import java.nio.charset.IllegalCharsetNameException;
+
 public class FoodItem {
     private String name;
     private int mass;
@@ -15,6 +17,14 @@ public class FoodItem {
         this.carbohydrates = carbs;
         this.fats = fats;
         this.kcals = kcals;
+    }
+
+    public static float portionNV(int mass, float num) {
+        return mass * num / 100;
+    }
+
+    public static int portionNV(int mass, int num) {
+        return Math.round(mass * num / 100);
     }
 
     public String getName() {

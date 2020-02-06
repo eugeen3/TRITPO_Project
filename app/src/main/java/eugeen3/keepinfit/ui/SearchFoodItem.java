@@ -32,6 +32,14 @@ public class SearchFoodItem extends AppCompatActivity {
     ListView foodItemList;
     EditText foodItemFilter;
 
+    String name;
+    int mass;
+    float prots;
+    float fats;
+    float carbs;
+    int kcals;
+    FoodItem fItem;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,12 +99,17 @@ public class SearchFoodItem extends AppCompatActivity {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View arg1, int position, long arg3) {
                     Cursor cursor = (Cursor) parent.getAdapter().getItem(position);
-                    String name = cursor.getString(1);
-                    float  prots = cursor.getFloat(2);
-                    float  carbs = cursor.getFloat(3);
-                    float  fats = cursor.getFloat(4);
-                    int  kcals = cursor.getInt(5);
+                    name = cursor.getString(1);
+                    prots = cursor.getFloat(2);
+                    carbs = cursor.getFloat(3);
+                    fats = cursor.getFloat(4);
+                    kcals = cursor.getInt(5);
                     Intent intent = new Intent(getApplicationContext(), AddFoodItem.class);
+                    intent.putExtra(Meal.KEY_NAME, name);
+                    intent.putExtra(Meal.KEY_PROTS, prots);
+                    intent.putExtra(Meal.KEY_CARBS, carbs);
+                    intent.putExtra(Meal.KEY_FATS, fats);
+                    intent.putExtra(Meal.KEY_KCALS, kcals);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                     startActivityForResult(intent, 1);
                     finish();
@@ -116,19 +129,25 @@ public class SearchFoodItem extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (data == null) {return;}
-        String name = data.getStringExtra("foodName");
-        int mass = data.getIntExtra("foodMass", 100);
-        float prots = data.getFloatExtra("foodProts", 1.0f);
-        float fats = data.getFloatExtra("foodFats", 1.0f);
-        float carbs = data.getFloatExtra("foodCarbs", 1.0f);
-        int kcals = data.getIntExtra("foodKcals", 1);
-        FoodItem fItem = new FoodItem(name, mass, prots, carbs, fats, kcals);
-        foodItemAdapter.getCursor();
+        mass = data.getIntExtra("mass", 0);
+        portionNV(mass);
+        Intent intent = new Intent();
+        intent.putExtra(Meal.KEY_NAME, name);
+        intent.putExtra(Meal.KEY_MASS, mass);
+        intent.putExtra(Meal.KEY_PROTS, prots);
+        intent.putExtra(Meal.KEY_CARBS, carbs);
+        intent.putExtra(Meal.KEY_FATS, fats);
+        intent.putExtra(Meal.KEY_KCALS, kcals);
+        setResult(RESULT_OK, intent);
+        //Toast.makeText(getApplicationContext(),
+        //        name + " " + prots + " " + carbs + " " + fats + " " + kcals,
+        //        Toast.LENGTH_LONG).show();
+        finish();
     }
 
     public void cancelSearch(View view) {
         Intent intent = new Intent(this, Meal.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(intent);
         finish();
     }
@@ -136,12 +155,15 @@ public class SearchFoodItem extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         Intent intent = new Intent(this, Meal.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(intent);
         finish();
     }
 
-    public void addFoodItemToDB() {
-
+    private void portionNV(int mass) {
+        prots = FoodItem.portionNV(mass, prots);
+        carbs = FoodItem.portionNV(mass, carbs);
+        fats = FoodItem.portionNV(mass, fats);
+        kcals = FoodItem.portionNV(mass, kcals);
     }
 }
