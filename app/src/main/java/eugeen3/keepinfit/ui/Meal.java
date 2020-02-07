@@ -1,24 +1,30 @@
 package eugeen3.keepinfit.ui;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import eugeen3.keepinfit.R;
 import eugeen3.keepinfit.adapters.MealAdapter;
+import eugeen3.keepinfit.database.FileList;
 import eugeen3.keepinfit.entities.FoodItem;
 
 public class Meal extends AppCompatActivity {
 
-    private List<FoodItem> foodItems = new ArrayList<>();
+    private String mealName;
+    private int amount;
+    private FileList<FoodItem> fileList;
+    private List<FoodItem> foodItems;
     private MealAdapter adapter;
     private RecyclerView recyclerView;
     private FloatingActionButton addFoodItem;
@@ -29,10 +35,26 @@ public class Meal extends AppCompatActivity {
     public static final String KEY_CARBS = "carbs";
     public static final String KEY_FATS = "fats";
     public static final String KEY_KCALS = "kcals";
+    public static String FILE_PATH;
+    public static final String FILE_NAME = "/Meal.txt";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        foodItems = new LinkedList<>();
+        List<String> str = loadFromFile();
+        if (str != null) {
+            fileList = new FileList<FoodItem>();
+            Toast.makeText(getApplicationContext(), "" + str.size(), Toast.LENGTH_SHORT).show();
+            for (int i = 0; i < str.size();i++) {
+
+                String[] info = fileList.stringParser(str.get(i));
+                FoodItem foodItem = new FoodItem(info[0], Integer.parseInt(info[1]),
+                        Float.parseFloat(info[2]), Float.parseFloat(info[3]),
+                        Float.parseFloat(info[4]), Integer.parseInt(info[5]));
+                foodItems.add(foodItem);
+            }
+        }
         setContentView(R.layout.meal);
         setTitle("textView");
         overridePendingTransition(0, 0);
@@ -42,17 +64,16 @@ public class Meal extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), SearchFoodItem.class);
-                //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivityForResult(intent, 1);
-                //finish();
+                //saveToFile();
             }
         });
-        setInitialData();
+
         recyclerView = findViewById(R.id.foodItemsList);
         adapter = new MealAdapter(this, foodItems);
         recyclerView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
     }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -69,7 +90,6 @@ public class Meal extends AppCompatActivity {
         adapter.notifyDataSetChanged();
     }
 
-
     @Override
     public void onBackPressed() {
         Intent intent = new Intent(this, MainActivity.class);
@@ -78,11 +98,30 @@ public class Meal extends AppCompatActivity {
         finish();
     }
 
-    private void setInitialData(){
-        foodItems.add(new FoodItem ("Банан", 200, 5.2f, 62.7f, 2, 278));
-        foodItems.add(new FoodItem ("Каша овсяная", 200, 10, 123, 14.88f, 600));
-        foodItems.add(new FoodItem ("Каша овсяная", 200, 10, 123, 14.88f, 600));
-        foodItems.add(new FoodItem ("Каша овсяная", 200, 10, 123, 14.88f, 600));
-        foodItems.add(new FoodItem ("Каша овсяная", 200, 10, 123, 14.88f, 600));
+    @Override
+    public void onDestroy() {
+        saveToFile();
+        super.onDestroy();
+    }
+
+    public void saveToFile() {
+        Context context = getApplicationContext();
+        FILE_PATH = context.getFilesDir().toString() + FILE_NAME;
+        FileList fileList = new FileList(FILE_PATH, foodItems);
+        fileList.saveList();
+        Toast.makeText(getApplicationContext(), FILE_PATH, Toast.LENGTH_SHORT).show();
+    }
+
+    public List<String> loadFromFile() {
+        Context context = getApplicationContext();
+        FILE_PATH = context.getFilesDir().toString() + FILE_NAME;
+        List<String> str = null;
+        try {
+            FileList fileList = new FileList(FILE_PATH, foodItems);
+            str = fileList.loadList();
+        } catch (Exception e) { }
+        if (str != null)
+            Toast.makeText(getApplicationContext(), "loaded " + str.size(), Toast.LENGTH_SHORT).show();
+        return str;
     }
 }

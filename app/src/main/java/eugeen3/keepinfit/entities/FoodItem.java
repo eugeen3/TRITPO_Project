@@ -1,8 +1,8 @@
 package eugeen3.keepinfit.entities;
 
-import java.nio.charset.IllegalCharsetNameException;
+import java.io.Serializable;
 
-public class FoodItem {
+public class FoodItem implements Serializable {
     private String name;
     private int mass;
     private float proteins;
@@ -49,5 +49,12 @@ public class FoodItem {
 
     public int getKcals() {
         return kcals;
+    }
+
+    @Override
+    public String toString() {
+        return new StringBuffer().append(name + " ").append(mass + " ").
+                append(proteins + " ").append(fats + " ").
+                append(carbohydrates + " ").append(kcals + " ").toString();
     }
 }

@@ -22,12 +22,12 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import eugeen3.keepinfit.R;
-import eugeen3.keepinfit.adapters.DBAdapter;
+import eugeen3.keepinfit.database.FoodDBHelper;
 import eugeen3.keepinfit.entities.FoodItem;
 
 public class SearchFoodItem extends AppCompatActivity {
 
-    private DBAdapter sqlHelper;
+    private FoodDBHelper sqlHelper;
     private SQLiteDatabase db;
     private Cursor foodItemCursor;
     private SimpleCursorAdapter foodItemAdapter;
@@ -49,7 +49,7 @@ public class SearchFoodItem extends AppCompatActivity {
         foodItemList = findViewById(R.id.foundedFoodItems);
         foodItemFilter = findViewById(R.id.searchFood);
 
-        sqlHelper = new DBAdapter(getApplicationContext());
+        sqlHelper = new FoodDBHelper(getApplicationContext());
         sqlHelper.create_db();
     }
 
@@ -58,10 +58,10 @@ public class SearchFoodItem extends AppCompatActivity {
         super.onResume();
         try {
             db = sqlHelper.open();
-            foodItemCursor = db.rawQuery("select * from " + DBAdapter.getTable(), null);
-            String[] headers = new String[]{DBAdapter.getColumnName(),
-                    DBAdapter.getColumnProteins(), DBAdapter.getColumnFats(),
-                    DBAdapter.getColumnCarbs(), DBAdapter.getColumnKcals(), DBAdapter.getColumnId()};
+            foodItemCursor = db.rawQuery("select * from " + FoodDBHelper.TABLE, null);
+            String[] headers = new String[]{FoodDBHelper.COLUMN_NAME,
+                    FoodDBHelper.COLUMN_PROTEINS, FoodDBHelper.COLUMN_FATS,
+                    FoodDBHelper.COLUMN_CARBS, FoodDBHelper.COLUMN_KCALS, FoodDBHelper.COLUMN_ID};
             foodItemAdapter = new SimpleCursorAdapter(this, R.layout.founded_food_items,
                     foodItemCursor, headers, new int[]{R.id.foundedFoodName,
                     R.id.foundedFoodProtValue, R.id.foundedFoodFatValue,
@@ -86,11 +86,11 @@ public class SearchFoodItem extends AppCompatActivity {
                 public Cursor runQuery(CharSequence constraint) {
 
                     if (constraint == null || constraint.length() == 0) {
-                        return db.rawQuery("select * from " + DBAdapter.getTable(), null);
+                        return db.rawQuery("select * from " + FoodDBHelper.TABLE, null);
                     }
                     else {
-                        return db.rawQuery("select * from " + DBAdapter.getTable() + " where " +
-                                DBAdapter.getColumnName() + " like ?", new String[]{"%" + constraint.toString() + "%"});
+                        return db.rawQuery("select * from " + FoodDBHelper.TABLE + " where " +
+                                FoodDBHelper.COLUMN_NAME + " like ?", new String[]{"%" + constraint.toString() + "%"});
                     }
                 }
             });
