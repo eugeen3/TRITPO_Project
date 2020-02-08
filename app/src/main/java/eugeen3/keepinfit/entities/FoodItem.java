@@ -1,6 +1,8 @@
 package eugeen3.keepinfit.entities;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 public class FoodItem implements Serializable {
     private String name;
@@ -20,7 +22,8 @@ public class FoodItem implements Serializable {
     }
 
     public static float portionNV(int mass, float num) {
-        return mass * num / 100;
+        return new BigDecimal(mass * num / 100).
+                setScale(2, RoundingMode.UP).floatValue();
     }
 
     public static int portionNV(int mass, int num) {
@@ -55,6 +58,6 @@ public class FoodItem implements Serializable {
     public String toString() {
         return new StringBuffer().append(name + " ").append(mass + " ").
                 append(proteins + " ").append(fats + " ").
-                append(carbohydrates + " ").append(kcals + " ").toString();
+                append(carbohydrates + " ").append(kcals).toString();
     }
 }

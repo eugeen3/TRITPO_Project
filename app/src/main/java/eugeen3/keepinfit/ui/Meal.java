@@ -3,6 +3,7 @@ package eugeen3.keepinfit.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -13,6 +14,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import eugeen3.keepinfit.R;
 import eugeen3.keepinfit.adapters.MealAdapter;
@@ -45,13 +47,17 @@ public class Meal extends AppCompatActivity {
         List<String> str = loadFromFile();
         if (str != null) {
             fileList = new FileList<FoodItem>();
-            Toast.makeText(getApplicationContext(), "" + str.size(), Toast.LENGTH_SHORT).show();
             for (int i = 0; i < str.size();i++) {
 
                 String[] info = fileList.stringParser(str.get(i));
-                FoodItem foodItem = new FoodItem(info[0], Integer.parseInt(info[1]),
-                        Float.parseFloat(info[2]), Float.parseFloat(info[3]),
-                        Float.parseFloat(info[4]), Integer.parseInt(info[5]));
+                FoodItem foodItem = new FoodItem(
+                        info[0] = info[0].replace(FileList.CHAR_UNDERSCORE, FileList.CHAR_SPACE),
+                        //info[0],
+                        Integer.parseInt(info[1]),
+                        Float.parseFloat(info[2]),
+                        Float.parseFloat(info[3]),
+                        Float.parseFloat(info[4]),
+                        Integer.parseInt(info[5]));
                 foodItems.add(foodItem);
             }
         }
@@ -109,7 +115,6 @@ public class Meal extends AppCompatActivity {
         FILE_PATH = context.getFilesDir().toString() + FILE_NAME;
         FileList fileList = new FileList(FILE_PATH, foodItems);
         fileList.saveList();
-        Toast.makeText(getApplicationContext(), FILE_PATH, Toast.LENGTH_SHORT).show();
     }
 
     public List<String> loadFromFile() {
@@ -120,8 +125,6 @@ public class Meal extends AppCompatActivity {
             FileList fileList = new FileList(FILE_PATH, foodItems);
             str = fileList.loadList();
         } catch (Exception e) { }
-        if (str != null)
-            Toast.makeText(getApplicationContext(), "loaded " + str.size(), Toast.LENGTH_SHORT).show();
         return str;
     }
 }

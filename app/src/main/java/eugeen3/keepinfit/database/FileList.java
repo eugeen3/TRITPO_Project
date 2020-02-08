@@ -6,22 +6,18 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.List;
 
 public class FileList<T> {
 
     private String name;
-    //private String path;
     private List<T> list;
+    public static final char CHAR_SPACE = ' ';
+    public static final char CHAR_UNDERSCORE = '_';
 
     public FileList(String fileName, List<T> list) {
         this.name = fileName;
-        //this.path = filePath;
         this.list = list;
     }
 
@@ -32,7 +28,7 @@ public class FileList<T> {
         try {
             pw = new PrintWriter(new BufferedWriter(new FileWriter(name)));
             for(T foodItem : list){
-                pw.println(foodItem.toString());
+                pw.println(underscores(foodItem.toString()));
                 pw.flush();
             }
             pw.close();
@@ -63,5 +59,20 @@ public class FileList<T> {
         String delimeter = " ";
         String subStr[] = line.split(delimeter);
         return subStr;
+    }
+
+    public String underscores(String str) {
+        int cnt = 0;
+        int i = str.length() - 1;
+        while(true) {
+            System.out.println(str.charAt(i));
+            if (str.charAt(i) == CHAR_SPACE) cnt++;
+            if (cnt == 5) break;
+            i--;
+        }
+        String newStr = str.substring(0, i);
+        str = str.substring(i + 1, str.length() - 1);
+        str = newStr.replace(CHAR_SPACE, CHAR_UNDERSCORE) + " " + str;
+        return str;
     }
 }
