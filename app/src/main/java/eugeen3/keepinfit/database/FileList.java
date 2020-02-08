@@ -65,13 +65,12 @@ public class FileList<T> {
         int cnt = 0;
         int i = str.length() - 1;
         while(true) {
-            System.out.println(str.charAt(i));
             if (str.charAt(i) == CHAR_SPACE) cnt++;
             if (cnt == 5) break;
             i--;
         }
         String newStr = str.substring(0, i);
-        str = str.substring(i + 1, str.length() - 1);
+        str = str.substring(i + 1);
         str = newStr.replace(CHAR_SPACE, CHAR_UNDERSCORE) + " " + str;
         return str;
     }

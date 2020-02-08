@@ -12,12 +12,12 @@ public class FoodItem implements Serializable {
     private float fats;
     private int kcals;
 
-    public FoodItem(String name, int mass, float prots, float carbs, float fats, int kcals) {
+    public FoodItem(String name, int mass, float prots, float fats, float carbs, int kcals) {
         this.name = name;
         this.mass = mass;
         this.proteins = prots;
-        this.carbohydrates = carbs;
         this.fats = fats;
+        this.carbohydrates = carbs;
         this.kcals = kcals;
     }
 

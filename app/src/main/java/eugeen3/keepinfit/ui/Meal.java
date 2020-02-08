@@ -46,13 +46,13 @@ public class Meal extends AppCompatActivity {
         foodItems = new LinkedList<>();
         List<String> str = loadFromFile();
         if (str != null) {
+            Toast.makeText(getApplicationContext(), str.get(0), Toast.LENGTH_SHORT).show();
             fileList = new FileList<FoodItem>();
             for (int i = 0; i < str.size();i++) {
 
                 String[] info = fileList.stringParser(str.get(i));
                 FoodItem foodItem = new FoodItem(
                         info[0] = info[0].replace(FileList.CHAR_UNDERSCORE, FileList.CHAR_SPACE),
-                        //info[0],
                         Integer.parseInt(info[1]),
                         Float.parseFloat(info[2]),
                         Float.parseFloat(info[3]),
@@ -71,7 +71,7 @@ public class Meal extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), SearchFoodItem.class);
                 startActivityForResult(intent, 1);
-                //saveToFile();
+                saveToFile();
             }
         });
 
