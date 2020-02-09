@@ -7,12 +7,16 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.List;
+
 import eugeen3.keepinfit.R;
+import eugeen3.keepinfit.entities.Meal;
 
 public class MainActivity extends AppCompatActivity {
     private TextView BMR;
 
     private int BMRvalue;
+    private List<Meal> mealList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
         overridePendingTransition(0, 0);
 
         BMR = findViewById(R.id.goalKcal);
+
     }
 
     @Override
@@ -37,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void openFoodList(View view) {
-        Intent intent = new Intent(this, Meal.class);
+        Intent intent = new Intent(this, MealActivity.class);
         startActivity(intent);
         finish();
     }

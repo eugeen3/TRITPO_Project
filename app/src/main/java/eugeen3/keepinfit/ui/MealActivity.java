@@ -3,8 +3,8 @@ package eugeen3.keepinfit.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,22 +14,20 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.logging.Logger;
 
 import eugeen3.keepinfit.R;
 import eugeen3.keepinfit.adapters.MealAdapter;
 import eugeen3.keepinfit.database.FileList;
 import eugeen3.keepinfit.entities.FoodItem;
 
-public class Meal extends AppCompatActivity {
+public class MealActivity extends AppCompatActivity {
 
-    private String mealName;
-    private int amount;
     private FileList<FoodItem> fileList;
     private List<FoodItem> foodItems;
     private MealAdapter adapter;
     private RecyclerView recyclerView;
     private FloatingActionButton addFoodItem;
+    private EditText mealName;
 
     public static final String KEY_NAME = "name";
     public static final String KEY_MASS = "mass";
@@ -38,33 +36,20 @@ public class Meal extends AppCompatActivity {
     public static final String KEY_FATS = "fats";
     public static final String KEY_KCALS = "kcals";
     public static String FILE_PATH;
-    public static final String FILE_NAME = "/Meal.txt";
+    public static final String FILE_NAME = "Meal.txt";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         foodItems = new LinkedList<>();
         List<String> str = loadFromFile();
-        if (str != null) {
-            Toast.makeText(getApplicationContext(), str.get(0), Toast.LENGTH_SHORT).show();
-            fileList = new FileList<FoodItem>();
-            for (int i = 0; i < str.size();i++) {
+        if (str != null) restoreList(str);
 
-                String[] info = fileList.stringParser(str.get(i));
-                FoodItem foodItem = new FoodItem(
-                        info[0] = info[0].replace(FileList.CHAR_UNDERSCORE, FileList.CHAR_SPACE),
-                        Integer.parseInt(info[1]),
-                        Float.parseFloat(info[2]),
-                        Float.parseFloat(info[3]),
-                        Float.parseFloat(info[4]),
-                        Integer.parseInt(info[5]));
-                foodItems.add(foodItem);
-            }
-        }
         setContentView(R.layout.meal);
         setTitle("textView");
         overridePendingTransition(0, 0);
 
+        mealName = findViewById(R.id.mealName);
         addFoodItem = findViewById(R.id.btnAddFoodItem);
         addFoodItem.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -110,21 +95,38 @@ public class Meal extends AppCompatActivity {
         super.onDestroy();
     }
 
-    public void saveToFile() {
+    private void saveToFile() {
         Context context = getApplicationContext();
-        FILE_PATH = context.getFilesDir().toString() + FILE_NAME;
+        FILE_PATH = context.getFilesDir().toString() + FileList.CHAR_SLASH + FILE_NAME;
         FileList fileList = new FileList(FILE_PATH, foodItems);
         fileList.saveList();
     }
 
-    public List<String> loadFromFile() {
+    private List<String> loadFromFile() {
         Context context = getApplicationContext();
-        FILE_PATH = context.getFilesDir().toString() + FILE_NAME;
+        FILE_PATH = context.getFilesDir().toString() + FileList.CHAR_SLASH + FILE_NAME;
         List<String> str = null;
         try {
             FileList fileList = new FileList(FILE_PATH, foodItems);
             str = fileList.loadList();
         } catch (Exception e) { }
         return str;
+    }
+
+    private void restoreList(List<String> str) {
+        Toast.makeText(getApplicationContext(), str.get(0), Toast.LENGTH_SHORT).show();
+        fileList = new FileList<>();
+        for (int i = 0; i < str.size();i++) {
+
+            String[] info = fileList.stringParser(str.get(i));
+            FoodItem foodItem = new FoodItem(
+                    info[0] = info[0].replace(FileList.CHAR_UNDERSCORE, FileList.CHAR_SPACE),
+                    Integer.parseInt(info[1]),
+                    Float.parseFloat(info[2]),
+                    Float.parseFloat(info[3]),
+                    Float.parseFloat(info[4]),
+                    Integer.parseInt(info[5]));
+            foodItems.add(foodItem);
+        }
     }
 }

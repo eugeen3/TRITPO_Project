@@ -121,19 +121,19 @@ public class SearchFoodItem extends AppCompatActivity {
 
     private void finishActivity() {
         Intent intent = new Intent();
-        intent.putExtra(Meal.KEY_NAME, name);
-        intent.putExtra(Meal.KEY_MASS, mass);
-        intent.putExtra(Meal.KEY_PROTS, prots);
-        intent.putExtra(Meal.KEY_CARBS, carbs);
-        intent.putExtra(Meal.KEY_FATS, fats);
-        intent.putExtra(Meal.KEY_KCALS, kcals);
+        intent.putExtra(MealActivity.KEY_NAME, name);
+        intent.putExtra(MealActivity.KEY_MASS, mass);
+        intent.putExtra(MealActivity.KEY_PROTS, prots);
+        intent.putExtra(MealActivity.KEY_CARBS, carbs);
+        intent.putExtra(MealActivity.KEY_FATS, fats);
+        intent.putExtra(MealActivity.KEY_KCALS, kcals);
         //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         setResult(RESULT_OK, intent);
         finish();
     }
 
     public void cancelSearch(View view) {
-        Intent intent = new Intent(this, Meal.class);
+        Intent intent = new Intent(this, MealActivity.class);
         //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(intent);
         finish();
@@ -141,7 +141,7 @@ public class SearchFoodItem extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(this, Meal.class);
+        Intent intent = new Intent(this, MealActivity.class);
         //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(intent);
         finish();

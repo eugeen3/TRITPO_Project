@@ -86,7 +86,7 @@ public class AddFoodItem extends AppCompatActivity {
                 }
                 else {
                     Intent intent = new Intent();
-                    intent.putExtra(Meal.KEY_MASS, iWeight);
+                    intent.putExtra(MealActivity.KEY_MASS, iWeight);
                     setResult(RESULT_OK, intent);
                     finish();
                 }

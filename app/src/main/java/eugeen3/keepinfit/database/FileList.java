@@ -15,10 +15,15 @@ public class FileList<T> {
     private List<T> list;
     public static final char CHAR_SPACE = ' ';
     public static final char CHAR_UNDERSCORE = '_';
+    public static final char CHAR_SLASH = '/';
 
     public FileList(String fileName, List<T> list) {
         this.name = fileName;
         this.list = list;
+    }
+
+    public FileList(String fileName) {
+        this.name = fileName;
     }
 
     public FileList() { }
@@ -56,9 +61,7 @@ public class FileList<T> {
     }
 
     public String[] stringParser(String line) {
-        String delimeter = " ";
-        String subStr[] = line.split(delimeter);
-        return subStr;
+        return line.split(" ");
     }
 
     public String underscores(String str) {
