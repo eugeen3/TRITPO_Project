@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,6 +21,8 @@ import eugeen3.keepinfit.adapters.MealAdapter;
 import eugeen3.keepinfit.database.FileList;
 import eugeen3.keepinfit.entities.FoodItem;
 
+import static java.lang.String.valueOf;
+
 public class MealActivity extends AppCompatActivity {
 
     private FileList<FoodItem> fileList;
@@ -27,7 +30,7 @@ public class MealActivity extends AppCompatActivity {
     private MealAdapter adapter;
     private RecyclerView recyclerView;
     private FloatingActionButton addFoodItem;
-    private EditText mealName;
+    private TextView mealName;
 
     public static final String KEY_NAME = "name";
     public static final String KEY_MASS = "mass";
@@ -49,6 +52,11 @@ public class MealActivity extends AppCompatActivity {
         overridePendingTransition(0, 0);
 
         mealName = findViewById(R.id.mealTitle);
+        Bundle arguments = getIntent().getExtras();
+        if(arguments!= null){
+            mealName.setText(valueOf(arguments.getString(MainActivity.KEY_MEAL_NAME)));
+        }
+
         addFoodItem = findViewById(R.id.btnAddFoodItem);
         addFoodItem.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,7 +121,6 @@ public class MealActivity extends AppCompatActivity {
     }
 
     private void restoreList(List<String> str) {
-        Toast.makeText(getApplicationContext(), str.get(0), Toast.LENGTH_SHORT).show();
         fileList = new FileList<>();
         for (int i = 0; i < str.size();i++) {
 
