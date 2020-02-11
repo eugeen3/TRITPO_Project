@@ -46,10 +46,9 @@ public class MealActivity extends AppCompatActivity {
         if (str != null) restoreList(str);
 
         setContentView(R.layout.meal);
-        setTitle("textView");
         overridePendingTransition(0, 0);
 
-        mealName = findViewById(R.id.mealName);
+        mealName = findViewById(R.id.mealTitle);
         addFoodItem = findViewById(R.id.btnAddFoodItem);
         addFoodItem.setOnClickListener(new View.OnClickListener() {
             @Override

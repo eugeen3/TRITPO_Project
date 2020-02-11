@@ -14,15 +14,15 @@ public class Meal {
     private float fats;
     private int kcals;
 
-    public Meal(String name, int mass, float prots, float fats, float carbs, int kcals) {
+    public Meal(String name, int amountOfProducts, float prots, float fats, float carbs, int kcals) {
         this.name = name;
-        this.amountOfProducts = mass;
+        this.amountOfProducts = amountOfProducts;
         this.proteins = prots;
         this.fats = fats;
         this.carbohydrates = carbs;
         this.kcals = kcals;
     }
-
+/*
     public Meal(String name) {
         this.name = name;
         this.amountOfProducts = 0;
@@ -31,7 +31,7 @@ public class Meal {
         this.carbohydrates = 0;
         this.kcals = 0;
     }
-
+ */
     public void recieveData(Context context) {
         FileList fileList = new FileList<FoodItem>(context.getFilesDir() +
                 "/" + name + ".txt");

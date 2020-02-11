@@ -4,19 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#fff"
+    android:background="#e0e0e0"
     android:paddingTop="8dp"
     tools:context=".ui.MainActivity">
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/foodItemsView"
+        android:id="@+id/mealView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
 
         android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -27,7 +29,7 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/foodName"
+                android:id="@+id/mealName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -41,18 +43,18 @@
                 app:layout_constraintVertical_bias="0.0" />
 
             <TextView
-                android:id="@+id/foodProtValue"
+                android:id="@+id/mealProtValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="60dp"
                 android:layout_marginLeft="60dp"
                 android:layout_marginTop="8dp"
                 android:text="TextView"
-                app:layout_constraintStart_toEndOf="@+id/foodProtText"
-                app:layout_constraintTop_toBottomOf="@+id/foodMass" />
+                app:layout_constraintStart_toEndOf="@+id/mealProtText"
+                app:layout_constraintTop_toBottomOf="@+id/mealAmount" />
 
             <TextView
-                android:id="@+id/foodFatValue"
+                android:id="@+id/mealFatValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="60dp"
@@ -61,11 +63,11 @@
                 android:text="TextView"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toEndOf="@+id/foodFatText"
-                app:layout_constraintTop_toBottomOf="@+id/foodMass" />
+                app:layout_constraintStart_toEndOf="@+id/mealFatText"
+                app:layout_constraintTop_toBottomOf="@+id/mealAmount" />
 
             <TextView
-                android:id="@+id/foodCarbValue"
+                android:id="@+id/mealCarbValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="60dp"
@@ -74,11 +76,11 @@
                 android:layout_marginBottom="8dp"
                 android:text="TextView"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/foodCarbText"
-                app:layout_constraintTop_toBottomOf="@+id/foodProtValue" />
+                app:layout_constraintStart_toEndOf="@+id/mealCarbText"
+                app:layout_constraintTop_toBottomOf="@+id/mealProtValue" />
 
             <TextView
-                android:id="@+id/foodKcalValue"
+                android:id="@+id/mealKcalValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="60dp"
@@ -89,12 +91,12 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toEndOf="@+id/foodKcalText"
-                app:layout_constraintTop_toBottomOf="@+id/foodFatValue"
+                app:layout_constraintStart_toEndOf="@+id/mealKcalText"
+                app:layout_constraintTop_toBottomOf="@+id/mealFatValue"
                 app:layout_constraintVertical_bias="0.0" />
 
             <TextView
-                android:id="@+id/foodMass"
+                android:id="@+id/mealAmount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -105,11 +107,11 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/foodName"
+                app:layout_constraintTop_toBottomOf="@+id/mealName"
                 app:layout_constraintVertical_bias="0.0" />
 
             <TextView
-                android:id="@+id/foodProtText"
+                android:id="@+id/mealProtText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -117,10 +119,10 @@
                 android:layout_marginTop="8dp"
                 android:text="@string/prot"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/foodMass" />
+                app:layout_constraintTop_toBottomOf="@+id/mealAmount" />
 
             <TextView
-                android:id="@+id/foodCarbText"
+                android:id="@+id/mealCarbText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -130,27 +132,27 @@
                 android:text="@string/carb"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/foodProtText" />
+                app:layout_constraintTop_toBottomOf="@+id/mealProtText" />
 
             <TextView
-                android:id="@+id/foodFatText"
+                android:id="@+id/mealFatText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="220dp"
                 android:layout_marginTop="8dp"
                 android:text="@string/fat"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/foodMass" />
+                app:layout_constraintTop_toBottomOf="@+id/mealAmount" />
 
             <TextView
-                android:id="@+id/foodKcalText"
+                android:id="@+id/mealKcalText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="220dp"
                 android:layout_marginTop="8dp"
                 android:text="@string/kcal"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/foodFatText" />
+                app:layout_constraintTop_toBottomOf="@+id/mealFatText" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

@@ -29,7 +29,7 @@ public class FileList<T> {
     public FileList() { }
 
     public void saveList() {
-        PrintWriter pw = null;
+        PrintWriter pw;
         try {
             pw = new PrintWriter(new BufferedWriter(new FileWriter(name)));
             for(T foodItem : list){
