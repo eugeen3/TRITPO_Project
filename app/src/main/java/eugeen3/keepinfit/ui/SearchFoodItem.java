@@ -15,7 +15,6 @@ import android.widget.EditText;
 import android.widget.FilterQueryProvider;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -124,18 +123,11 @@ public class SearchFoodItem extends AppCompatActivity {
         intent.putExtra(MealActivity.KEY_NAME, name);
         intent.putExtra(MealActivity.KEY_MASS, mass);
         intent.putExtra(MealActivity.KEY_PROTS, prots);
-        intent.putExtra(MealActivity.KEY_CARBS, carbs);
         intent.putExtra(MealActivity.KEY_FATS, fats);
+        intent.putExtra(MealActivity.KEY_CARBS, carbs);
         intent.putExtra(MealActivity.KEY_KCALS, kcals);
         //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         setResult(RESULT_OK, intent);
-        finish();
-    }
-
-    public void cancelSearch(View view) {
-        Intent intent = new Intent(this, MealActivity.class);
-        //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        startActivity(intent);
         finish();
     }
 
@@ -149,8 +141,8 @@ public class SearchFoodItem extends AppCompatActivity {
 
     private void portionNV(int mass) {
         prots = FoodItem.portionNV(mass, prots);
-        carbs = FoodItem.portionNV(mass, carbs);
         fats = FoodItem.portionNV(mass, fats);
+        carbs = FoodItem.portionNV(mass, carbs);
         kcals = FoodItem.portionNV(mass, kcals);
     }
 
@@ -162,7 +154,6 @@ public class SearchFoodItem extends AppCompatActivity {
         final EditText massText =  dialogView.findViewById(R.id.edt_comment);
         final Button input = dialogView.findViewById(R.id.btnInputMass);
         Button cancel = dialogView.findViewById(R.id.btnCancelInput);
-        final TextView text = findViewById(R.id.inputDialogText);
 
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override

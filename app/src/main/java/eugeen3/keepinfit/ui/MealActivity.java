@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,8 +19,7 @@ import eugeen3.keepinfit.R;
 import eugeen3.keepinfit.adapters.MealAdapter;
 import eugeen3.keepinfit.database.FileList;
 import eugeen3.keepinfit.entities.FoodItem;
-
-import static java.lang.String.valueOf;
+import eugeen3.keepinfit.entities.Meal;
 
 public class MealActivity extends AppCompatActivity {
 
@@ -31,31 +29,38 @@ public class MealActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private FloatingActionButton addFoodItem;
     private TextView mealName;
+    private int number;
+    //private boolean isListChanged;
 
     public static final String KEY_NAME = "name";
     public static final String KEY_MASS = "mass";
+    public static final String KEY_AMOUNT = "amount";
     public static final String KEY_PROTS = "prots";
     public static final String KEY_CARBS = "carbs";
     public static final String KEY_FATS = "fats";
     public static final String KEY_KCALS = "kcals";
     public static String FILE_PATH;
-    public static final String FILE_NAME = "Meal.txt";
+    public static String FILE_NAME;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        foodItems = new LinkedList<>();
-        List<String> str = loadFromFile();
-        if (str != null) restoreList(str);
-
         setContentView(R.layout.meal);
         overridePendingTransition(0, 0);
 
+        //isListChanged = false;
         mealName = findViewById(R.id.mealTitle);
         Bundle arguments = getIntent().getExtras();
         if(arguments!= null){
-            mealName.setText(valueOf(arguments.getString(MainActivity.KEY_MEAL_NAME)));
+            String name = arguments.getString(MainActivity.KEY_MEAL_NAME);
+            number = arguments.getInt(MainActivity.KEY_NUMBER);
+            mealName.setText(name);
+            FILE_NAME = name;
         }
+
+        foodItems = new LinkedList<>();
+        List<String> str = loadFromFile();
+        if (str != null) restoreList(str);
 
         addFoodItem = findViewById(R.id.btnAddFoodItem);
         addFoodItem.setOnClickListener(new View.OnClickListener() {
@@ -83,17 +88,35 @@ public class MealActivity extends AppCompatActivity {
         float fats = data.getFloatExtra(KEY_FATS, 1.0f);
         float carbs = data.getFloatExtra(KEY_CARBS, 1.0f);
         int kcals = data.getIntExtra(KEY_KCALS, 1);
-        FoodItem fItem = new FoodItem(name, mass, prots, carbs, fats, kcals);
+        FoodItem fItem = new FoodItem(name, mass, prots, fats, carbs, kcals);
         foodItems.add(fItem);
         adapter.notifyDataSetChanged();
+        //isListChanged = true;
     }
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(this, MainActivity.class);
-        //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        startActivity(intent);
-        finish();
+        if (foodItems.size() != 0) {
+            Intent intent = new Intent(this, MainActivity.class);
+            //if (isListChanged) {
+            Meal meal = sumAllFood();
+            intent.putExtra(KEY_NAME, meal.getName());
+            intent.putExtra(KEY_AMOUNT, meal.getAmountOfProducts());
+            intent.putExtra(KEY_PROTS, meal.getProteins());
+            intent.putExtra(KEY_CARBS, meal.getCarbohydrates());
+            intent.putExtra(KEY_FATS, meal.getFats());
+            intent.putExtra(KEY_KCALS, meal.getKcals());
+            intent.putExtra(MainActivity.KEY_NUMBER, number);
+            //Toast.makeText(this, "Changed", Toast.LENGTH_SHORT).show();
+            //}
+            //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
+            finish();
+        }
+        else {
+            Toast.makeText(getApplicationContext(),
+                    "Добавьте хотя бы 1 продукт", Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
@@ -133,6 +156,33 @@ public class MealActivity extends AppCompatActivity {
                     Float.parseFloat(info[4]),
                     Integer.parseInt(info[5]));
             foodItems.add(foodItem);
+        }
+    }
+
+    private Meal sumAllFood () {
+        if (foodItems.size() != 0) {
+            Meal allFoodItems = new Meal(FILE_NAME);
+            int amountOfProducts = 0;
+            float proteins = 0;
+            float carbohydrates = 0;
+            float fats = 0;
+            int kcals = 0;
+            for (FoodItem foodItem : foodItems) {
+                amountOfProducts++;
+                proteins += foodItem.getProteins();
+                carbohydrates += foodItem.getCarbohydrates();
+                fats += foodItem.getFats();
+                kcals += foodItem.getKcals();
+            }
+            allFoodItems.setAmountOfProducts(amountOfProducts);
+            allFoodItems.setProteins(proteins);
+            allFoodItems.setCarbohydrates(carbohydrates);
+            allFoodItems.setFats(fats);
+            allFoodItems.setKcals(kcals);
+            return allFoodItems;
+        }
+        else {
+            return new Meal(FILE_NAME);
         }
     }
 }

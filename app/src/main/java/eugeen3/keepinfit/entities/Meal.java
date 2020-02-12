@@ -22,7 +22,7 @@ public class Meal {
         this.carbohydrates = carbs;
         this.kcals = kcals;
     }
-/*
+
     public Meal(String name) {
         this.name = name;
         this.amountOfProducts = 0;
@@ -31,7 +31,7 @@ public class Meal {
         this.carbohydrates = 0;
         this.kcals = 0;
     }
- */
+
     public void recieveData(Context context) {
         FileList fileList = new FileList<FoodItem>(context.getFilesDir() +
                 "/" + name + ".txt");
@@ -50,6 +50,26 @@ public class Meal {
                 kcals += foodItem.getKcals();
             }
         }
+    }
+
+    public void setAmountOfProducts(int amountOfProducts) {
+        this.amountOfProducts = amountOfProducts;
+    }
+
+    public void setProteins(float proteins) {
+        this.proteins = proteins;
+    }
+
+    public void setCarbohydrates(float carbohydrates) {
+        this.carbohydrates = carbohydrates;
+    }
+
+    public void setFats(float fats) {
+        this.fats = fats;
+    }
+
+    public void setKcals(int kcals) {
+        this.kcals = kcals;
     }
 
     public String getName() {
