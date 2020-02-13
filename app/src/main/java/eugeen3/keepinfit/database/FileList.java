@@ -77,4 +77,30 @@ public class FileList<T> {
         str = newStr.replace(CHAR_SPACE, CHAR_UNDERSCORE) + " " + str;
         return str;
     }
+
+    public void saveStats(String str) {
+        PrintWriter pw;
+        try {
+            pw = new PrintWriter(new BufferedWriter(new FileWriter(name)));
+            pw.println(str);
+            pw.flush();
+            pw.close();
+        }
+        catch(IOException ex){
+            System.err.println(ex);
+        }
+    }
+
+    public String loadStats() {
+        BufferedReader bufferedReader = null;
+        String sCurrentLine = null;
+        try {
+            bufferedReader = new BufferedReader(new FileReader(name));
+            sCurrentLine = bufferedReader.readLine();
+            bufferedReader.close();
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+        return sCurrentLine;
+    }
 }

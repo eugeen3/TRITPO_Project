@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -98,7 +100,7 @@ public class MealActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         if (foodItems.size() != 0) {
-            Intent intent = new Intent(this, MainActivity.class);
+            Intent intent = new Intent();
             //if (isListChanged) {
             Meal meal = sumAllFood();
             intent.putExtra(KEY_NAME, meal.getName());
@@ -108,7 +110,7 @@ public class MealActivity extends AppCompatActivity {
             intent.putExtra(KEY_FATS, meal.getFats());
             intent.putExtra(KEY_KCALS, meal.getKcals());
             intent.putExtra(MainActivity.KEY_NUMBER, number);
-            startActivity(intent);
+            setResult(RESULT_OK,intent);
             finish();
         }
         else {
@@ -160,22 +162,24 @@ public class MealActivity extends AppCompatActivity {
     private Meal sumAllFood () {
         if (foodItems.size() != 0) {
             Meal allFoodItems = new Meal(FILE_NAME);
-            int amountOfProducts = 0;
+            int amountOfProducts = foodItems.size();
             float proteins = 0;
             float carbohydrates = 0;
             float fats = 0;
             int kcals = 0;
             for (FoodItem foodItem : foodItems) {
-                amountOfProducts++;
                 proteins += foodItem.getProteins();
                 carbohydrates += foodItem.getCarbohydrates();
                 fats += foodItem.getFats();
                 kcals += foodItem.getKcals();
             }
             allFoodItems.setAmountOfProducts(amountOfProducts);
-            allFoodItems.setProteins(proteins);
-            allFoodItems.setCarbohydrates(carbohydrates);
-            allFoodItems.setFats(fats);
+            allFoodItems.setProteins(new BigDecimal(proteins).
+                    setScale(2, RoundingMode.UP).floatValue());
+            allFoodItems.setFats(new BigDecimal(fats).
+                    setScale(2, RoundingMode.UP).floatValue());
+            allFoodItems.setCarbohydrates(new BigDecimal(carbohydrates).
+                    setScale(2, RoundingMode.UP).floatValue());
             allFoodItems.setKcals(kcals);
             return allFoodItems;
         }

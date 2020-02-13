@@ -31,12 +31,19 @@
                 android:textSize="16sp" />
 
             <TextView
-                android:id="@+id/goalProts"
-                android:layout_width="wrap_content"
+                android:id="@+id/currentProts"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="100dp"
                 android:layout_marginLeft="100dp"
-                android:text="TextView"
+                android:text="@string/zero"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/goalProts"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/slash_zero"
                 android:textSize="16sp" />
 
         </TableRow>
@@ -54,11 +61,18 @@
                 android:textSize="16sp" />
 
             <TextView
-                android:id="@+id/goalFats"
-                android:layout_width="wrap_content"
+                android:id="@+id/currentFats"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="100dp"
-                android:text="TextView"
+                android:text="@string/zero"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/goalFats"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/slash_zero"
                 android:textSize="16sp" />
         </TableRow>
 
@@ -75,11 +89,18 @@
                 android:textSize="16sp" />
 
             <TextView
-                android:id="@+id/goalCarbs"
-                android:layout_width="wrap_content"
+                android:id="@+id/currentCarbs"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="100dp"
-                android:text="TextView"
+                android:text="@string/zero"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/goalCarbs"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/slash_zero"
                 android:textSize="16sp" />
         </TableRow>
 
@@ -97,12 +118,19 @@
                 android:textSize="16sp" />
 
             <TextView
-                android:id="@+id/goalKcal"
-                android:layout_width="wrap_content"
+                android:id="@+id/currentKcals"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="100dp"
                 android:layout_marginLeft="100dp"
-                android:text="TextView"
+                android:text="@string/zero"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/goalKcals"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/slash_zero"
                 android:textSize="16sp" />
         </TableRow>
 
@@ -136,7 +164,7 @@
         android:id="@+id/openProfile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/menu_profile"
+        android:text="@string/btn_profile"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/inputDialogText" />

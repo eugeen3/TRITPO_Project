@@ -2,6 +2,7 @@ package eugeen3.keepinfit.ui;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.LayoutInflater;
@@ -17,6 +18,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -29,7 +32,6 @@ import eugeen3.keepinfit.entities.Meal;
 import static java.lang.String.valueOf;
 
 public class MainActivity extends AppCompatActivity implements OnItemClickListener {
-    private TextView BMR;
 
     private int BMRvalue;
     private FileList<FoodItem> fileList;
@@ -38,9 +40,18 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
     private FloatingActionButton addMeal;
     private RecyclerView recyclerView;
     private Button btnProfile;
+    private Button btnReset;
+    private TextView curProts;
+    private TextView curFats;
+    private TextView curCarbs;
+    private TextView curKcals;
+    private TextView goalProts;
+    private TextView goalFats;
+    private TextView goalCarbs;
+    private TextView goalKcals;
 
     public static final int REQUEST_CODE_PROFILE = 1;
-    public static final int REQUEST_CODE_MEAL = 1;
+    public static final int REQUEST_CODE_MEAL = 2;
     public static final String KEY_MEAL_NAME = "mealName";
     public static final String KEY_MEAL_AMOUNT = "mealAmount";
     public static final String KEY_MEAL_PROTS = "mealProts";
@@ -49,7 +60,8 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
     public static final String KEY_MEAL_KCALS = "mealKcals";
     public static final String KEY_NUMBER = "mealNumber";
     public static String FILE_PATH;
-    public static final String FILE_NAME = "allMeals";
+    public static final String FILE_NAME = "all_meals";
+    public static final String FILE_STATS = "stats";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,22 +73,6 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
         List<String> str = loadFromFile();
         if (str != null) restoreList(str);
 
-        Bundle arguments = getIntent().getExtras();
-        if(arguments!= null){
-            String name = arguments.getString(MealActivity.KEY_NAME);
-            int amount = arguments.getInt(MealActivity.KEY_AMOUNT);
-            float proteins = arguments.getFloat(MealActivity.KEY_PROTS);
-            float fats = arguments.getFloat(MealActivity.KEY_FATS);
-            float carbohydrates = arguments.getFloat(MealActivity.KEY_CARBS);
-            int kcals = arguments.getInt(MealActivity.KEY_KCALS);
-            //if(!mealList.isEmpty())
-                mealList.set(arguments.getInt(KEY_NUMBER),
-                        new Meal(name, amount, proteins, fats, carbohydrates, kcals));
-            //else mealList.add(new Meal(name, amount, proteins, fats, carbohydrates, kcals));
-        }
-
-        //addMeals();
-        BMR = findViewById(R.id.goalKcal);
         addMeal = findViewById(R.id.btnAddMeal);
         addMeal.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,23 +86,29 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), Profile.class);
-                //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivityForResult(intent, REQUEST_CODE_PROFILE);
             }
         });
+
+        curProts = findViewById(R.id.currentProts);
+        curFats = findViewById(R.id.currentFats);
+        curCarbs = findViewById(R.id.currentCarbs);
+        curKcals = findViewById(R.id.currentKcals);
+
+        goalProts = findViewById(R.id.goalProts);
+        goalFats = findViewById(R.id.goalFats);
+        goalCarbs = findViewById(R.id.goalCarbs);
+        goalKcals = findViewById(R.id.goalKcals);
+
+        //FileList stats = new FileList(FILE_STATS);
+        //String stats = stats.loadList();
+        updateStats();
 
         recyclerView = findViewById(R.id.mealsList);
         adapter = new MealListAdapter(this, mealList);
         recyclerView.setAdapter(adapter);
         adapter.setClickListener(this);
         adapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void onResume() {
-
-
-        super.onResume();
     }
 
     @Override
@@ -117,8 +119,14 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
 
     @Override
     public void onPause() {
+        saveToFile();
         super.onPause();
-        finish();
+    }
+
+    @Override
+    public void onResume() {
+        updateStats();
+        super.onResume();
     }
 
     @Override
@@ -130,24 +138,26 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
                     return;
                 }
                 BMRvalue = data.getIntExtra("BMR", 0);
-                BMR.setText(valueOf(BMRvalue));
+                goalKcals.setText("/" + valueOf(BMRvalue));
                 break;
             }
-//            case REQUEST_CODE_MEAL: {
-//                if (data == null) {
-//                    return;
-//                }
-//                BMRvalue = data.getIntExtra("BMR", 0);
-//                BMR.setText(valueOf(BMRvalue));
-//                break;
-//            }
+            case REQUEST_CODE_MEAL: {
+                if (data == null) {
+                    return;
+                }
+                String name = data.getStringExtra(MealActivity.KEY_NAME);
+                int amount = data.getIntExtra(MealActivity.KEY_AMOUNT, 0);
+                float proteins = data.getFloatExtra(MealActivity.KEY_PROTS, 0f);
+                float fats = data.getFloatExtra(MealActivity.KEY_FATS, 0f);
+                float carbohydrates = data.getFloatExtra(MealActivity.KEY_CARBS, 0f);
+                int kcals = data.getIntExtra(MealActivity.KEY_KCALS, 0);
+                mealList.set(data.getIntExtra(KEY_NUMBER, 0),
+                        new Meal(name, amount, proteins, fats, carbohydrates, kcals));
+                adapter.notifyDataSetChanged();
+                break;
+            }
         }
 
-    }
-
-    private void addMeals() {
-        mealList.add(new Meal("Завтрак", 2, 240f, 320f, 424f, 800));
-        mealList.add(new Meal("Обед", 4, 23f, 123f, 42f, 142));
     }
 
     @Override
@@ -157,8 +167,20 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
         Intent intent = new Intent(this, MealActivity.class);
         intent.putExtra(KEY_MEAL_NAME, meal.getName());
         intent.putExtra(KEY_NUMBER, position);
-        //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        startActivityForResult(,intent);
+        startActivityForResult(intent, REQUEST_CODE_MEAL);
+    }
+
+    private void updateStats() {
+
+        if (!mealList.isEmpty()) {
+            sumAllMeals();
+        }
+        else {
+            curProts.setText(valueOf(0));
+            curFats.setText(valueOf(0));
+            curCarbs.setText(valueOf(0));
+            curKcals.setText(valueOf(0));
+        }
     }
 
     public void showTitleDialog() {
@@ -226,6 +248,8 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
     private void addNewMeal(String name) {
         mealList.add(new Meal(name));
         adapter.notifyDataSetChanged();
+        Toast.makeText(getApplicationContext(),
+                valueOf(mealList.size()), Toast.LENGTH_LONG).show();
         saveToFile();
     }
 
@@ -259,6 +283,28 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
                     Float.parseFloat(info[4]),
                     Integer.parseInt(info[5]));
             mealList.add(meal);
+        }
+    }
+
+    private void sumAllMeals() {
+        if (mealList.size() != 0) {
+            float proteins = 0;
+            float carbohydrates = 0;
+            float fats = 0;
+            int kcals = 0;
+            for (Meal meal : mealList) {
+                proteins += meal.getProteins();
+                carbohydrates += meal.getCarbohydrates();
+                fats += meal.getFats();
+                kcals += meal.getKcals();
+            }
+            curProts.setText(valueOf(new BigDecimal(proteins).
+                    setScale(2, RoundingMode.UP).floatValue()));
+            curFats.setText(valueOf(new BigDecimal(fats).
+                    setScale(2, RoundingMode.UP).floatValue()));
+            curCarbs.setText(valueOf(new BigDecimal(carbohydrates).
+                    setScale(2, RoundingMode.UP).floatValue()));
+            curKcals.setText(valueOf(kcals));
         }
     }
 }
