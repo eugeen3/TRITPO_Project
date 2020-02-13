@@ -126,7 +126,7 @@ public class SearchFoodItem extends AppCompatActivity {
         intent.putExtra(MealActivity.KEY_FATS, fats);
         intent.putExtra(MealActivity.KEY_CARBS, carbs);
         intent.putExtra(MealActivity.KEY_KCALS, kcals);
-        //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         setResult(RESULT_OK, intent);
         finish();
     }

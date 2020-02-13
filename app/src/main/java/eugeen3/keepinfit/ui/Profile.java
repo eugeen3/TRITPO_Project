@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Spinner;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,14 +22,15 @@ public class Profile extends AppCompatActivity
     private int weightInt;
     private int BMR;
 
-    Spinner genderSpinner;
-    Spinner ageSpinner;
-    Spinner heightSpinner;
-    Spinner weightSpinner;
-    Spinner goalSpinner;
-    Spinner activitySpinner;
+    private Spinner genderSpinner;
+    private Spinner ageSpinner;
+    private Spinner heightSpinner;
+    private Spinner weightSpinner;
+    private Spinner goalSpinner;
+    private Spinner activitySpinner;
+    private Button btnDone;
 
-    SharedPreferences sPref;
+    private SharedPreferences sPref;
     public static final String USERS_DATA = "profile";
     public static final String USERS_GENDER = "gender";
     public static final String USERS_AGE = "age";
@@ -42,6 +44,14 @@ public class Profile extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.profile);
         overridePendingTransition(0, 0);
+
+        btnDone = findViewById(R.id.btnDone);
+        btnDone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                goBack();
+            }
+        });
 
         initializeSpinners();
 
@@ -64,7 +74,7 @@ public class Profile extends AppCompatActivity
         activitySpinner = findViewById(R.id.activitySpinner);
     }
 
-    public void goBack(View view) {
+    public void goBack() {
         saveSettings();
         Intent intent = new Intent();
         BMR = calculateBMR();
@@ -188,9 +198,10 @@ public class Profile extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(getApplicationContext(), SearchFoodItem.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        startActivity(intent);
-        finish();
+        //Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        //startActivity(intent);
+        //finish();
+        goBack();
     }
 }

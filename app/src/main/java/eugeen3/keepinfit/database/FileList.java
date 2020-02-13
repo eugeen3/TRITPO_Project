@@ -32,8 +32,8 @@ public class FileList<T> {
         PrintWriter pw;
         try {
             pw = new PrintWriter(new BufferedWriter(new FileWriter(name)));
-            for(T foodItem : list){
-                pw.println(underscores(foodItem.toString()));
+            for(T item : list){
+                pw.println(underscores(item.toString()));
                 pw.flush();
             }
             pw.close();

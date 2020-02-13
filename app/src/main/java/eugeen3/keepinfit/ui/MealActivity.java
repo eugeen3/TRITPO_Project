@@ -67,6 +67,7 @@ public class MealActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), SearchFoodItem.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivityForResult(intent, 1);
                 saveToFile();
             }
@@ -107,9 +108,6 @@ public class MealActivity extends AppCompatActivity {
             intent.putExtra(KEY_FATS, meal.getFats());
             intent.putExtra(KEY_KCALS, meal.getKcals());
             intent.putExtra(MainActivity.KEY_NUMBER, number);
-            //Toast.makeText(this, "Changed", Toast.LENGTH_SHORT).show();
-            //}
-            //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(intent);
             finish();
         }
