@@ -1,0 +1,1 @@
+![1](https://github.com/eugeen3/TRITPO_Project/blob/master/Images/Diagrams/ClassDiagram.png)
