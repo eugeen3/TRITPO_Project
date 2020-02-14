@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
 
     private int BMRvalue;
     private FileList<FoodItem> fileList;
+    private FileList stats;
     private List<Meal> mealList;
     private MealListAdapter adapter;
     private FloatingActionButton addMeal;
@@ -101,27 +102,32 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
         goalCarbs = findViewById(R.id.goalCarbs);
         goalKcals = findViewById(R.id.goalKcals);
 
-        //FileList stats = new FileList(FILE_STATS);
-        //String stats = stats.loadList();
-        updateStats();
-
         recyclerView = findViewById(R.id.mealsList);
         adapter = new MealListAdapter(this, mealList);
         recyclerView.setAdapter(adapter);
-        //recyclerView.setLongClickable(true);
         adapter.setClickListener(this);
         adapter.notifyDataSetChanged();
+
+        FILE_PATH = getApplicationContext().getFilesDir().toString()
+                + FileList.CHAR_SLASH + FILE_STATS;
+        stats = new FileList(FILE_PATH);
+        try {
+            setStats(stats.loadStats());
+        } catch (Exception e) { }
+        updateStats();
     }
 
     @Override
     public void onDestroy() {
         saveToFile();
+        stats.saveStats(getStats());
         super.onDestroy();
     }
 
     @Override
     public void onPause() {
         saveToFile();
+        stats.saveStats(getStats());
         super.onPause();
     }
 
@@ -143,6 +149,7 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
                 goalProts.setText("/" + valueOf(data.getIntExtra(Profile.GOAL_PROTS, 0)));
                 goalFats.setText("/" + valueOf(data.getIntExtra(Profile.GOAL_FATS, 0)));
                 goalCarbs.setText("/" + valueOf(data.getIntExtra(Profile.GOAL_CARBS, 0)));
+                stats.saveStats(getStats());
                 break;
             }
             case REQUEST_CODE_MEAL: {
@@ -167,6 +174,7 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
     @Override
     public void onClick(View view, int position) {
         saveToFile();
+        stats.saveStats(getStats());
         final Meal meal = mealList.get(position);
         Intent intent = new Intent(this, MealActivity.class);
         intent.putExtra(KEY_MEAL_NAME, meal.getName());
@@ -175,7 +183,6 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
     }
 
     private void updateStats() {
-
         if (!mealList.isEmpty()) {
             sumAllMeals();
         }
@@ -245,23 +252,9 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
 
     private void addNewMeal(String name) {
         mealList.add(new Meal(name));
-        //removeCopies();
         adapter.notifyDataSetChanged();
         saveToFile();
-    }
-
-    private void removeCopies() {
-        Meal meal;
-        Meal meal2;
-        for (int i = 0; i < mealList.size() - 1; i++) {
-            meal = mealList.get(i);
-            for (int j = i + 1; j < mealList.size() - 1; j++) {
-                meal2 = mealList.get(j);
-                if (meal2.equals(meal)) {
-                    mealList.remove(meal);
-                }
-            }
-        }
+        stats.saveStats(getStats());
     }
 
     private void saveToFile() {
@@ -317,5 +310,20 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
                     setScale(2, RoundingMode.UP).floatValue()));
             curKcals.setText(valueOf(kcals));
         }
+    }
+
+    private String getStats() {
+        return new String(goalProts.getText().toString() + " "
+                + goalFats.getText().toString() + " "
+                + goalCarbs.getText().toString() + " "
+                + goalKcals.getText().toString());
+    }
+
+    private void setStats(String str) {
+        String[] stats = str.split(" ");
+        goalProts.setText(stats[0]);
+        goalFats.setText(stats[1]);
+        goalCarbs.setText(stats[2]);
+        goalKcals.setText(stats[3]);
     }
 }

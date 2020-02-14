@@ -5,13 +5,13 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
-import android.renderscript.ScriptGroup;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -28,6 +28,7 @@ public class Profile extends AppCompatActivity
     private int prots;
     private int fats;
     private int carbs;
+    private boolean isDataCorrect;
 
     private Spinner genderSpinner;
     private Spinner goalSpinner;
@@ -56,11 +57,15 @@ public class Profile extends AppCompatActivity
         setContentView(R.layout.profile);
         overridePendingTransition(0, 0);
 
+        isDataCorrect = true;
         btnDone = findViewById(R.id.btnDone);
         btnDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                goBack();
+                if (isDataCorrect) goBack();
+                else Toast.makeText(getApplicationContext(),
+                        "Некоторые данные введены неверно",
+                        Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -87,8 +92,90 @@ public class Profile extends AppCompatActivity
 
     private void initializeInputs() {
         ageInput = findViewById(R.id.ageInput);
+        ageInput.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                try {
+                    ageInt = Integer.parseInt(ageInput.getText().toString());
+                    if (ageInt < 10 || ageInt > 120) {
+                        Toast.makeText(getApplicationContext(),
+                                "Введите корректный возраст(10-120)",
+                                Toast.LENGTH_SHORT).show();
+                        isDataCorrect = false;
+                    }
+                    else isDataCorrect = true;
+                }
+                catch (NumberFormatException nfe)
+                {
+                    System.out.println("age cast NumberFormatException: " + nfe.getMessage());
+                }
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) { }
+        });
         heightInput = findViewById(R.id.heightInput);
+        heightInput.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                try {
+                    heightInt = Integer.parseInt(heightInput.getText().toString());
+                    if (heightInt < 140 || heightInt > 220) {
+                        Toast.makeText(getApplicationContext(),
+                                "Введите корректный рост(140-220)",
+                                Toast.LENGTH_SHORT).show();
+                        isDataCorrect = false;
+                    }
+                    else isDataCorrect = true;
+                }
+                catch (NumberFormatException nfe)
+                {
+                    System.out.println("height cast NumberFormatException: " + nfe.getMessage());
+                }
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+        });
         weightInput = findViewById(R.id.weightInput);
+        weightInput.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                try {
+                    weightInt = Integer.parseInt(weightInput.getText().toString());
+                    if (weightInt < 40 || weightInt > 400) {
+                        Toast.makeText(getApplicationContext(),
+                                "Введите корректный вес(40-400)",
+                                Toast.LENGTH_SHORT).show();
+                        isDataCorrect = false;
+                    }
+                    else isDataCorrect = true;
+                }
+                catch (NumberFormatException nfe)
+                {
+                    System.out.println("weight cast NumberFormatException: " + nfe.getMessage());
+                }
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+        });
     }
 
     public void goBack() {
@@ -124,32 +211,7 @@ public class Profile extends AppCompatActivity
         activitySpinner.setSelection(sPref.getInt(USERS_ACTIVITY, 0));
     }
 
-
     private void calculateBMR() {
-        try {
-            ageInt = Integer.parseInt(ageInput.getText().toString());
-        }
-        catch (NumberFormatException nfe)
-        {
-            System.out.println("age cast NumberFormatException: " + nfe.getMessage());
-        }
-
-        try {
-            heightInt = Integer.parseInt(heightInput.getText().toString());
-        }
-        catch (NumberFormatException nfe)
-        {
-            System.out.println("height cast NumberFormatException: " + nfe.getMessage());
-        }
-
-        try {
-            weightInt = Integer.parseInt(weightInput.getText().toString());
-        }
-        catch (NumberFormatException nfe)
-        {
-            System.out.println("weight cast NumberFormatException: " + nfe.getMessage());
-        }
-
         if (genderSpinner.getSelectedItemPosition() == 0) {
             BMR = (int) Math.round((88.36 + (13.4 * weightInt) + (4.8 * heightInt) - (5.7 * ageInt)));
         }
@@ -194,22 +256,25 @@ public class Profile extends AppCompatActivity
                 prots = weightInt * 2;
                 fats = (int) Math.round(weightInt * 0.9);
                 carbs = (int) Math.round(weightInt * 4.5);
+                break;
             }
             case 1: {
                 prots = (int) Math.round(weightInt * 1.5);
                 fats = (int) Math.round(weightInt * 0.8);
-                carbs = (int) Math.round(weightInt * 2);
+                carbs = weightInt * 2;
+                break;
             }
             case 2: {
                 prots = weightInt;
                 fats = (int) Math.round(weightInt * 0.9);
-                carbs = (int) Math.round(weightInt * 3);
+                carbs = weightInt * 3;
+                break;
             }
         }
     }
 
     @Override
     public void onBackPressed() {
-        goBack();
+        if (isDataCorrect) goBack();
     }
 }
