@@ -41,23 +41,11 @@
         app:layout_constraintTop_toTopOf="parent" />
 
 
-    <Spinner
-        android:id="@+id/weightSpinner"
-        android:layout_width="130dp"
-        android:layout_height="30dp"
-        android:layout_marginTop="23dp"
-        android:layout_marginEnd="60dp"
-        android:layout_marginRight="60dp"
-        android:entries="@array/weightList"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/heightSpinner" />
-
     <TextView
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
-        android:layout_marginLeft="30dp"
         android:layout_marginTop="25dp"
         android:text="@string/profile_age"
         android:textAllCaps="false"
@@ -66,32 +54,8 @@
         android:textSize="20sp"
         android:textStyle="bold|italic"
         android:typeface="serif"
-        app:layout_constraintEnd_toStartOf="@+id/ageSpinner"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
-
-    <Spinner
-        android:id="@+id/ageSpinner"
-        android:layout_width="130dp"
-        android:layout_height="30dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="60dp"
-        android:layout_marginRight="60dp"
-        android:entries="@array/ages"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/genderSpinner" />
-
-    <Spinner
-        android:id="@+id/heightSpinner"
-        android:layout_width="130dp"
-        android:layout_height="30dp"
-        android:layout_marginTop="23dp"
-        android:layout_marginEnd="60dp"
-        android:layout_marginRight="60dp"
-        android:entries="@array/heightList"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ageSpinner" />
 
 
     <TextView
@@ -99,7 +63,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
-        android:layout_marginLeft="30dp"
         android:layout_marginTop="25dp"
         android:text="@string/profile_height"
         android:textAllCaps="false"
@@ -108,8 +71,6 @@
         android:textSize="20sp"
         android:textStyle="bold|italic"
         android:typeface="serif"
-        app:layout_constraintEnd_toStartOf="@+id/heightSpinner"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
@@ -118,7 +79,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
-        android:layout_marginLeft="30dp"
         android:layout_marginTop="25dp"
         android:text="@string/profile_weight"
         android:textAllCaps="false"
@@ -127,8 +87,6 @@
         android:textSize="20sp"
         android:textStyle="bold|italic"
         android:typeface="serif"
-        app:layout_constraintEnd_toStartOf="@+id/weightSpinner"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
@@ -203,6 +161,39 @@
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/activitySpinner"/>
+
+    <EditText
+        android:id="@+id/ageInput"
+        android:layout_width="80dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="60dp"
+        android:ems="10"
+        android:inputType="numberSigned"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/genderSpinner" />
+
+    <EditText
+        android:id="@+id/heightInput"
+        android:layout_width="80dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="60dp"
+        android:ems="10"
+        android:inputType="numberSigned"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ageInput" />
+
+    <EditText
+        android:id="@+id/weightInput"
+        android:layout_width="80dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="60dp"
+        android:ems="10"
+        android:inputType="numberSigned"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/heightInput" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

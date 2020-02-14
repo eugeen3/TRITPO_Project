@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -107,6 +108,7 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
         recyclerView = findViewById(R.id.mealsList);
         adapter = new MealListAdapter(this, mealList);
         recyclerView.setAdapter(adapter);
+        //recyclerView.setLongClickable(true);
         adapter.setClickListener(this);
         adapter.notifyDataSetChanged();
     }
@@ -137,8 +139,10 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
                 if (data == null) {
                     return;
                 }
-                BMRvalue = data.getIntExtra("BMR", 0);
-                goalKcals.setText("/" + valueOf(BMRvalue));
+                goalKcals.setText("/" + valueOf(data.getIntExtra(Profile.GOAL_BMR, 0)));
+                goalProts.setText("/" + valueOf(data.getIntExtra(Profile.GOAL_PROTS, 0)));
+                goalFats.setText("/" + valueOf(data.getIntExtra(Profile.GOAL_FATS, 0)));
+                goalCarbs.setText("/" + valueOf(data.getIntExtra(Profile.GOAL_CARBS, 0)));
                 break;
             }
             case REQUEST_CODE_MEAL: {
@@ -206,39 +210,33 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
             @Override
             public void onClick(View view) {
                 String newName = nameText.getText().toString();
-                while (true) {
-                    if (newName.equals("")) {
-                        Toast.makeText(getApplicationContext(),
-                                "Введите название", Toast.LENGTH_LONG).show();
-                        break;
-                    }
-//                    if (newName.contains(" ")) {
-//                        Toast.makeText(getApplicationContext(),
-//                                "В названии не должно быть пробелов", Toast.LENGTH_LONG).show();
-//                        break;
-//                    }
+                if (newName.equals("")) {
+                    Toast.makeText(getApplicationContext(),
+                            "Введите название", Toast.LENGTH_LONG).show();
+                }
 
-                    if(mealList != null) {
-                        int cnt = 0;
-                        for (Meal i : mealList) {
-                            cnt++;
-                            if (newName.equals(i.getName())) {
-                                Toast.makeText(getApplicationContext(),
-                                        "Приём пищи с таким названием уже существует",
-                                        Toast.LENGTH_LONG).show();
-                                nameText.setText("");
-                                break;
-                            }
-                            if (cnt == mealList.size() - 1) {
-                                addNewMeal(newName);
-                                break;
-                            }
+                if (!mealList.isEmpty()) {
+                    int cnt = 0;
+                    for (Meal i : mealList) {
+                        cnt++;
+                        if (newName.equals(i.getName())) {
+                            Toast.makeText(getApplicationContext(),
+                                    "Приём пищи с таким названием уже существует",
+                                    Toast.LENGTH_LONG).show();
+                            nameText.setText("");
+                            break;
+                        }
+                        if (cnt == mealList.size()) {
+                            addNewMeal(newName);
+                            dialogBuilder.dismiss();
+                            return;
                         }
                     }
+                } else {
                     addNewMeal(newName);
-                    break;
+                    dialogBuilder.dismiss();
+                    return;
                 }
-                dialogBuilder.dismiss();
             }
         });
         dialogBuilder.setView(dialogView);
@@ -247,10 +245,23 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
 
     private void addNewMeal(String name) {
         mealList.add(new Meal(name));
+        //removeCopies();
         adapter.notifyDataSetChanged();
-        Toast.makeText(getApplicationContext(),
-                valueOf(mealList.size()), Toast.LENGTH_LONG).show();
         saveToFile();
+    }
+
+    private void removeCopies() {
+        Meal meal;
+        Meal meal2;
+        for (int i = 0; i < mealList.size() - 1; i++) {
+            meal = mealList.get(i);
+            for (int j = i + 1; j < mealList.size() - 1; j++) {
+                meal2 = mealList.get(j);
+                if (meal2.equals(meal)) {
+                    mealList.remove(meal);
+                }
+            }
+        }
     }
 
     private void saveToFile() {

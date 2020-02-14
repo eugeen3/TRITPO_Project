@@ -69,7 +69,9 @@ public class MealListAdapter extends RecyclerView.Adapter<MealListAdapter.ViewHo
 
         @Override
         public void onClick(View view) {
-            if (clickListener != null) clickListener.onClick(view, getAdapterPosition());
+            if (clickListener != null) {
+                clickListener.onClick(view, getAdapterPosition());
+            }
         }
     }
 }

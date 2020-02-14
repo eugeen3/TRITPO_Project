@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
@@ -32,7 +31,6 @@ public class MealActivity extends AppCompatActivity {
     private FloatingActionButton addFoodItem;
     private TextView mealName;
     private int number;
-    //private boolean isListChanged;
 
     public static final String KEY_NAME = "name";
     public static final String KEY_MASS = "mass";
@@ -50,7 +48,6 @@ public class MealActivity extends AppCompatActivity {
         setContentView(R.layout.meal);
         overridePendingTransition(0, 0);
 
-        //isListChanged = false;
         mealName = findViewById(R.id.mealTitle);
         Bundle arguments = getIntent().getExtras();
         if(arguments!= null){
@@ -94,14 +91,12 @@ public class MealActivity extends AppCompatActivity {
         FoodItem fItem = new FoodItem(name, mass, prots, fats, carbs, kcals);
         foodItems.add(fItem);
         adapter.notifyDataSetChanged();
-        //isListChanged = true;
     }
 
     @Override
     public void onBackPressed() {
+        Intent intent = new Intent();
         if (foodItems.size() != 0) {
-            Intent intent = new Intent();
-            //if (isListChanged) {
             Meal meal = sumAllFood();
             intent.putExtra(KEY_NAME, meal.getName());
             intent.putExtra(KEY_AMOUNT, meal.getAmountOfProducts());
@@ -110,13 +105,13 @@ public class MealActivity extends AppCompatActivity {
             intent.putExtra(KEY_FATS, meal.getFats());
             intent.putExtra(KEY_KCALS, meal.getKcals());
             intent.putExtra(MainActivity.KEY_NUMBER, number);
-            setResult(RESULT_OK,intent);
-            finish();
         }
         else {
-            Toast.makeText(getApplicationContext(),
-                    "Добавьте хотя бы 1 продукт", Toast.LENGTH_LONG).show();
+            intent.putExtra(KEY_NAME, FILE_NAME);
+            intent.putExtra(MainActivity.KEY_NUMBER, number);
         }
+        setResult(RESULT_OK ,intent);
+        finish();
     }
 
     @Override
