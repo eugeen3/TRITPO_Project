@@ -34,7 +34,6 @@ import static java.lang.String.valueOf;
 
 public class MainActivity extends AppCompatActivity implements OnItemClickListener {
 
-    private int BMRvalue;
     private FileList<FoodItem> fileList;
     private FileList stats;
     private List<Meal> mealList;
