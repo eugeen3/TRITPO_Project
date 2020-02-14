@@ -28,7 +28,7 @@
 |:--|:--|
 | Пользователь | Человек, который может использовать весь функционал приложения |
 
-![1](https://github.com/eugeen3/TRITPO_Project/blob/master/Images/Diagrams/UseCase.PNG)
+![1](https://github.com/eugeen3/TRITPO_Project/blob/master/Images/Diagrams/UseCase.png)
 
 <a name="2"/>
 
