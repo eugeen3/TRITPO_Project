@@ -28,6 +28,8 @@
 |:--|:--|
 | Пользователь | Человек, который может использовать весь функционал приложения |
 
+![1](https://github.com/eugeen3/TRITPO_Project/blob/master/Images/Diagrams/UseCase.PNG)
+
 <a name="2"/>
 
 # 2 Варианты использования
