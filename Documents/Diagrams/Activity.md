@@ -1,3 +1,3 @@
-![1](../../Images/Diagrams/ActivityDiagram1.png)
-![2](../Images/Diagrams/ActivityDiagram2.png)
-![3](../Images/Diagrams/ActivityDiagram3.png)
+![1](https://github.com/eugeen3/TRITPO_Project/blob/master/Images/Diagrams/ActivityDiagram1.PNG)
+![2](https://github.com/eugeen3/TRITPO_Project/blob/master/Images/Diagrams/ActivityDiagram2.PNG)
+![3](https://github.com/eugeen3/TRITPO_Project/blob/master/Images/Diagrams/ActivityDiagram3.PNG)
